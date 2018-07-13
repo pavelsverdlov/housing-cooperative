@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Xamarin.Presentation.Pages;assembly=Xamarin.Presentation"
+             xmlns:social="clr-namespace:Xamarin.Presentation.Social;assembly=Xamarin.Presentation"
+             xmlns:local="clr-namespace:HousingCoo.Presentation.People"
+             xmlns:lv="clr-namespace:Xamarin.Presentation.Controls.LV;assembly=Xamarin.Presentation"
+             xmlns:crl="clr-namespace:Xamarin.Presentation.Controls;assembly=Xamarin.Presentation"
+             x:Name="page"
+             x:Class="HousingCoo.Presentation.People.PeopleListPage">
+    <ContentPage.Resources>
+        <DataTemplate x:Key="PeopleView">
+            <ViewCell>
+                <local:PeopleItemView />
+            </ViewCell>
+        </DataTemplate>
+    </ContentPage.Resources>
+    <ContentPage.BindingContext>
+        <local:PeopleListPagePresenter/>
+    </ContentPage.BindingContext>
+    <ContentPage.Behaviors>
+        <pages:PageNavigatorBehavior BindingContext="{x:Reference page}" Page="{Binding BindingContext.Page}" />
+    </ContentPage.Behaviors>
+    <!--<ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" />
+    </ContentPage.ToolbarItems>-->
+    <ContentPage.Content>
+        <lv:ExtendedListView 
+                             ItemTemplate="{StaticResource PeopleView}"
+                             ItemSelectedCommand="{Binding Controller.ItemSelectedCommand}"
+                             PullToRefresh="{Binding PullToRefresh}"
+                             BindingContext="{Binding}" 
+                             />
+    </ContentPage.Content>
+</ContentPage>

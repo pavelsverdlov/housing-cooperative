@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Xamarin.Presentation.Pages;assembly=Xamarin.Presentation"
+             xmlns:social="clr-namespace:Xamarin.Presentation.Social;assembly=Xamarin.Presentation"
+             xmlns:local="clr-namespace:HousingCoo.Presentation.Voting"
+             xmlns:crl="clr-namespace:Xamarin.Presentation.Controls;assembly=Xamarin.Presentation"
+             x:Name="page"
+             x:Class="HousingCoo.Presentation.Voting.VotingDetailPage">
+    <ContentPage.BindingContext>
+        <local:VotingDetailPresenter/>
+    </ContentPage.BindingContext>
+    <ContentPage.Behaviors>
+        <pages:PageNavigatorBehavior BindingContext="{x:Reference page}" Page="{Binding BindingContext.PageNavigator}" />
+    </ContentPage.Behaviors>
+    <ContentPage.Content>
+        <!--<social:ActivityDetailsPage BindingContext="{Binding}" />-->
+        <Grid x:Name="actdetails">
+            <Grid.Resources>
+                <ResourceDictionary>
+                </ResourceDictionary>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <ListView
+                 ItemsSource="{Binding DetailViewModel.ViewState.Comments, Mode=OneWay}"
+                 VerticalOptions="FillAndExpand" 
+                 HasUnevenRows="true"
+                 CachingStrategy="RecycleElement">
+                <ListView.Header>
+                    <social:ActivityView Grid.Row="0" BindingContext="{Binding HeaderViewModel}" Margin="0,0,0,10"/>
+                </ListView.Header>
+                <ListView.Behaviors>
+                    <crl:ListViewPullToRefreshBehavior BindingContext="{x:Reference page}" 
+                                               PullToRefresh="{Binding BindingContext.PullToRefresh}" />
+
+                    <crl:ListViewItemSelectedBehavior BindingContext="{x:Reference page}" 
+                                              ItemSelected="{Binding BindingContext.DetailViewModel.Controller.ItemSelectedCommand}" />
+
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <social:MessageView BindingContext="{Binding}" Margin="10,0,10,0"/>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <BoxView Style="{StaticResource SeparatorBox}" Grid.Row="1"/>
+            <Grid Grid.Row="2" ColumnSpacing="0" RowSpacing="0" Margin="10,0,5,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="40" />
+                </Grid.ColumnDefinitions>
+                <StackLayout Orientation="Horizontal" Grid.Column="0">
+                    <Image Source="icon.png" Aspect="AspectFit" WidthRequest="40" HorizontalOptions="Start"/>
+                    <Entry Placeholder="Оставить комментарий" HorizontalOptions="CenterAndExpand">
+                        <!--<Entry.Effects>
+                            <local:NoBorderEntryEffectiOS />
+                        </Entry.Effects>-->
+                    </Entry>
+                </StackLayout>
+                <Button Image="camera.png" Grid.Column="1" BorderWidth="0" Margin="5,0,5,0"/>
+                <Button Image="add.png" Grid.Column="2" BorderWidth="0"/>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

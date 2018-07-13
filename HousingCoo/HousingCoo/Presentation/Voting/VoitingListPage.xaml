@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Xamarin.Presentation.Pages;assembly=Xamarin.Presentation"
+             xmlns:social="clr-namespace:Xamarin.Presentation.Social;assembly=Xamarin.Presentation"
+             xmlns:local="clr-namespace:HousingCoo.Presentation.Voting"
+             xmlns:crl="clr-namespace:Xamarin.Presentation.Controls;assembly=Xamarin.Presentation"
+             xmlns:lv="clr-namespace:Xamarin.Presentation.Controls.LV;assembly=Xamarin.Presentation"
+             x:Name="page"
+             x:Class="HousingCoo.Presentation.Voting.VoitingListPage">
+    <ContentPage.Resources>
+        <DataTemplate x:Key="VotingView">
+            <ViewCell>
+                <social:ActivityView />
+            </ViewCell>
+        </DataTemplate>
+    </ContentPage.Resources>
+    <ContentPage.BindingContext>
+        <local:VotingListPresenter/>
+    </ContentPage.BindingContext>
+    <ContentPage.Behaviors>
+        <pages:PageNavigatorBehavior Page="{Binding Source={x:Reference Name=page}, Path=BindingContext.Page}" />
+    </ContentPage.Behaviors>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add new voting" Command="{Binding Controller.AddNewVoting}" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <lv:ExtendedListView 
+                             ItemTemplate="{StaticResource VotingView}"
+                             ItemSelectedCommand="{Binding Controller.ItemSelectedCommand}"
+                             PullToRefresh="{Binding PullToRefresh}"
+                             BindingContext="{Binding}" 
+                             />
+    </ContentPage.Content>
+</ContentPage>

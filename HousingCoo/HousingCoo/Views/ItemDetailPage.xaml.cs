@@ -28,11 +28,11 @@ namespace HousingCoo.Views {
             );
 
 
-            vm.DetailViewModel.ViewState.Comments = new System.Collections.ObjectModel.ObservableCollection<MessageViewState> {
-                    new MessageViewState{ IconSource="latenightseth.png", Title = "Vasiliy Pupkin", Message ="Agreed!"},
-                    new MessageViewState{ IconSource="latenightseth.png", Title = "Vasiliy Pupkin 2",
+            vm.DetailViewModel.ViewState.Comments = new System.Collections.ObjectModel.ObservableCollection<CommentViewState> {
+                    new CommentViewState{ IconSource="latenightseth.png", Title = "Vasiliy Pupkin", Message ="Agreed!"},
+                    new CommentViewState{ IconSource="latenightseth.png", Title = "Vasiliy Pupkin 2",
                         Message ="mageSource property. If set, if error occurs while loading image, an error placeholder is shown. It supports UriImageSource, FileImageSource and StreamImageSource."},
-                    new MessageViewState{ IconSource="latenightseth.png", Title = "Vasiliy Pupkin 3", Message ="Agreed!"},
+                    new CommentViewState{ IconSource="latenightseth.png", Title = "Vasiliy Pupkin 3", Message ="Agreed!"},
                 };
 
             BindingContext = vm;

@@ -11,9 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Presentation\MasterMenuPageMenuItem.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\AboutPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -23,15 +20,15 @@
     <Compile Update="Views\ItemsPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Presentation\MainPage.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\NewItemPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Presentation\Auth\SignInPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Presentation\MasterMenuPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -44,10 +41,13 @@
     <EmbeddedResource Update="Presentation\Messaging\PrivateMessageListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Presentation\People\PeopleItemView.xaml">
+    <EmbeddedResource Update="Presentation\Notification\NotificationListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Presentation\People\PeopleListPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Presentation\Voting\AddNewVotingPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Presentation\Voting\VoitingListPage.xaml">

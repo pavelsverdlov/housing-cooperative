@@ -2,6 +2,7 @@
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Xamarin.Presentation.Pages;
 
 namespace HousingCoo.Presentation {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -12,7 +13,7 @@ namespace HousingCoo.Presentation {
         }
 
         private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e) {
-            var item = e.SelectedItem as MasterMenuPageMenuItem;
+            var item = e.SelectedItem as NavPageMenuItem;
             if (item == null) {
                 return;
             }

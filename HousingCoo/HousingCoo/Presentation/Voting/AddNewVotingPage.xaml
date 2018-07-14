@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Xamarin.Presentation.Pages;assembly=Xamarin.Presentation"
+             xmlns:social="clr-namespace:Xamarin.Presentation.Social;assembly=Xamarin.Presentation"
+             xmlns:local="clr-namespace:HousingCoo.Presentation.Voting"
+             xmlns:crl="clr-namespace:Xamarin.Presentation.Controls;assembly=Xamarin.Presentation"
+             xmlns:lv="clr-namespace:Xamarin.Presentation.Controls.LV;assembly=Xamarin.Presentation"
+             x:Name="page"
+             x:Class="HousingCoo.Presentation.Voting.AddNewVotingPage">
+    <ContentPage.BindingContext>
+        <local:AddNewVotingPresenter/>
+    </ContentPage.BindingContext>
+    <social:AddNewActivityView BindingContext="{Binding}" />
+</ContentPage>

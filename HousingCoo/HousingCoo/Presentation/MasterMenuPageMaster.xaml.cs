@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Xamarin.Presentation.Pages;
 
 namespace HousingCoo.Presentation {
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -19,18 +20,18 @@ namespace HousingCoo.Presentation {
         }
 
         private class MasterMenuPageMasterViewModel : INotifyPropertyChanged {
-            public ObservableCollection<MasterMenuPageMenuItem> MenuItems { get; set; }
+            public ObservableCollection<NavPageMenuItem> MenuItems { get; set; }
 
             public Command<object> ItemSelectedCommand;
 
             public MasterMenuPageMasterViewModel() {
-                MenuItems = new ObservableCollection<MasterMenuPageMenuItem>(new[]
+                MenuItems = new ObservableCollection<NavPageMenuItem>(new[]
                 {
-                    new MasterMenuPageMenuItem { Id = 0, Title = "Page 1" },
-                    new MasterMenuPageMenuItem { Id = 1, Title = "Page 2" },
-                    new MasterMenuPageMenuItem { Id = 2, Title = "Page 3" },
-                    new MasterMenuPageMenuItem { Id = 3, Title = "Page 4" },
-                    new MasterMenuPageMenuItem { Id = 4, Title = "Page 5" },
+                    new NavPageMenuItem { Id = 0, Title = "Personal Information" },
+                    new NavPageMenuItem { Id = 1, Title = "Cashbox" },
+                    //new MasterMenuPageMenuItem { Id = 2, Title = "Page 3" },
+                    //new MasterMenuPageMenuItem { Id = 3, Title = "Page 4" },
+                    //new MasterMenuPageMenuItem { Id = 4, Title = "Page 5" },
                 });
                 ItemSelectedCommand = new Command<object>(OnItemSelected);
             }

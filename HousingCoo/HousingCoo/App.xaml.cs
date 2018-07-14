@@ -7,8 +7,8 @@ namespace HousingCoo {
         public App() {
             InitializeComponent();
 
-            var main = new MasterMenuPage();
-            MainPage = main;
+            //var main = new MasterMenuPage();
+            MainPage = new Presentation.Auth.SignInPage();
         }
 
         protected override void OnStart() {

@@ -64,7 +64,7 @@ namespace HousingCoo.Presentation.Voting {
             this.logger = logger;
             this.commutator = commutator;
             this.sender = sender;
-            Page = new PageNavigatorViewModel() { Title = "Votings" };
+            Page = new PageNavigatorViewModel() { IconSource = StaticResources.Icons.HomeWhite };
             Controller.VM = this;
             PullToRefresh = new ListViewPullToRefreshViewModel();
             PullToRefresh.Refreshed += OnListRefreshed;

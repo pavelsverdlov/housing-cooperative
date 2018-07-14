@@ -5,31 +5,29 @@
              xmlns:pages="clr-namespace:HousingCoo.Presentation"
              xmlns:voting="clr-namespace:HousingCoo.Presentation.Voting"
              xmlns:people="clr-namespace:HousingCoo.Presentation.People"
+             xmlns:mess="clr-namespace:HousingCoo.Presentation.Messaging"
+             xmlns:not="clr-namespace:HousingCoo.Presentation.Notification"
              xmlns:presen="clr-namespace:HousingCoo.Presentation">
     <MasterDetailPage.Master>
         <pages:MasterMenuPageMaster x:Name="MasterPage" />
     </MasterDetailPage.Master>
     <MasterDetailPage.Detail>
         <NavigationPage Title="Browse">
+            <NavigationPage.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="iOS" Value="tab_feed.png"/>
+                </OnPlatform>
+            </NavigationPage.Icon>
             <x:Arguments>
                 <TabbedPage>
 
                     <voting:VoitingListPage />
                     <people:PeopleListPage />
-                    <voting:VoitingListPage />
-                    <!--<NavigationPage Title="Browse">
-                <NavigationPage.Icon>
-                    <OnPlatform x:TypeArguments="FileImageSource">
-                        <On Platform="iOS" Value="tab_feed.png"/>
-                    </OnPlatform>
-                </NavigationPage.Icon>
-                <x:Arguments>
-                    <voting:VoitingListPage />
-                
-            </NavigationPage>-->
+                    <mess:PrivateMessageListPage />
+                    <not:NotificationListPage />
+                   
                 </TabbedPage>
             </x:Arguments>
         </NavigationPage>
-        <!--<presen:MainPage/>-->
     </MasterDetailPage.Detail>
 </MasterDetailPage>

@@ -13,33 +13,19 @@
                 <crl:ListViewItemSelectedBehavior ItemSelected="{Binding ItemSelectedCommand}" />
             </ListView.Behaviors>
             <ListView.Header>
-                <Grid BackgroundColor="#03A9F4">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="10"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="80"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="10"/>
-                    </Grid.RowDefinitions>
-                    <Label
-              Grid.Column="1"
-              Grid.Row="2"
-              Text="AppName"
-              Style="{DynamicResource SubtitleStyle}"/>
-                </Grid>
+                <StackLayout Padding="15,30,15,10" BackgroundColor="#03A9F4">
+                    <Image Source="InstagramLogo.png" HorizontalOptions="End" HeightRequest="50"></Image>
+                    <Image Source="icon.png" HorizontalOptions="Start" HeightRequest="50" ></Image>
+                    <Label Text="Binding AccountName}" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Start" />
+                    <Label Text="Binding AccountStatus}" TextColor="#E0E0E0" VerticalOptions="Center" HorizontalOptions="Start" />
+                </StackLayout>
             </ListView.Header>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout Padding="15,10" HorizontalOptions="FillAndExpand">
-                            <Label VerticalOptions="FillAndExpand" 
-                    VerticalTextAlignment="Center"
-                    Text="{Binding Title}" 
-                    FontSize="24"/>
+                            <Label VerticalOptions="FillAndExpand"  VerticalTextAlignment="Center" Text="{Binding Title}"
+                                   FontSize="Medium"/>
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

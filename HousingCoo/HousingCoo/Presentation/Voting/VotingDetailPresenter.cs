@@ -15,19 +15,19 @@ namespace HousingCoo.Presentation.Voting {
         public VotingDetailPresenter VM;
 
         public Command<ButtonModel> ClickCommand { get; }
-        public Command<MessageViewState> ItemSelectedCommand { get; }
+        public Command<CommentViewState> ItemSelectedCommand { get; }
 
         
 
         public VotingController() {
             
             ClickCommand = new Command<ButtonModel>(OnClickCommand);
-            ItemSelectedCommand = new Command<MessageViewState>(OnItemSelected);
+            ItemSelectedCommand = new Command<CommentViewState>(OnItemSelected);
         }
 
      
 
-        private void OnItemSelected(MessageViewState obj) {
+        private void OnItemSelected(CommentViewState obj) {
 
         }
 
@@ -75,9 +75,10 @@ namespace HousingCoo.Presentation.Voting {
         }
 
         public void OnCommentsReceived(IEnumerable<CommentVotingModel> comments) {
-            var list = new ObservableCollection<MessageViewState>();
+            var list = new ObservableCollection<CommentViewState>();
             foreach (var item in comments) {
-                var vs = new MessageViewState {
+                var vs = new CommentViewState {
+                    IconSource = "icon.png",
                     Title = item.Actor,
                     Message = item.Message
                 };

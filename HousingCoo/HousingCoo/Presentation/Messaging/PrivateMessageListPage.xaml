@@ -1,12 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:HousingCoo.Presentation.Messaging"
+             xmlns:pages="clr-namespace:Xamarin.Presentation.Pages;assembly=Xamarin.Presentation"
+             xmlns:social="clr-namespace:Xamarin.Presentation.Social;assembly=Xamarin.Presentation"
+             xmlns:lv="clr-namespace:Xamarin.Presentation.Controls.LV;assembly=Xamarin.Presentation"
+             x:Name="page"
              x:Class="HousingCoo.Presentation.Messaging.PrivateMessageListPage">
+    <ContentPage.Resources>
+        <DataTemplate x:Key="MessageView">
+            <ViewCell>
+                <social:PeopleItemView IsActionsVisible="False" />
+            </ViewCell>
+        </DataTemplate>
+    </ContentPage.Resources>
+    <ContentPage.BindingContext>
+        <local:PrivateMessListPresenter/>
+    </ContentPage.BindingContext>
+    <ContentPage.Behaviors>
+        <pages:PageNavigatorBehavior Page="{Binding Source={x:Reference Name=page}, Path=BindingContext.Page}" />
+    </ContentPage.Behaviors>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <lv:ExtendedListView 
+                             ItemTemplate="{StaticResource MessageView}"
+                             ItemSelectedCommand="{Binding Controller.ItemSelectedCommand}"
+                             PullToRefresh="{Binding PullToRefresh}"
+                             BindingContext="{Binding}" 
+                             />
     </ContentPage.Content>
 </ContentPage>

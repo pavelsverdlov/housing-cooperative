@@ -2,15 +2,22 @@
 <MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HousingCoo.Presentation.MasterMenuPage"
-             xmlns:pages="clr-namespace:HousingCoo.Presentation"
+             xmlns:pages="clr-namespace:Xamarin.Presentation.Pages;assembly=Xamarin.Presentation"
              xmlns:voting="clr-namespace:HousingCoo.Presentation.Voting"
              xmlns:people="clr-namespace:HousingCoo.Presentation.People"
              xmlns:mess="clr-namespace:HousingCoo.Presentation.Messaging"
              xmlns:not="clr-namespace:HousingCoo.Presentation.Notification"
-             xmlns:presen="clr-namespace:HousingCoo.Presentation">
+             xmlns:presen="clr-namespace:HousingCoo.Presentation" Title="MasterDetailPage"
+            x:Name="page">
+    
+    <MasterDetailPage.BindingContext>
+        <presen:MasterDetailPresenter />
+    </MasterDetailPage.BindingContext>
+    
     <MasterDetailPage.Master>
-        <pages:MasterMenuPageMaster x:Name="MasterPage" />
+        <presen:MasterMenuPageMaster Title="Need to set :(" BindingContext="{Binding}" />
     </MasterDetailPage.Master>
+    
     <MasterDetailPage.Detail>
         <NavigationPage Title="Browse">
             <NavigationPage.Icon>
@@ -30,4 +37,9 @@
             </x:Arguments>
         </NavigationPage>
     </MasterDetailPage.Detail>
+
+    <MasterDetailPage.Behaviors>
+        <pages:MasterDetailPageNavigatorBehavior Page="{Binding Source={x:Reference Name=page}, Path=BindingContext.Page}" />
+    </MasterDetailPage.Behaviors>
+
 </MasterDetailPage>

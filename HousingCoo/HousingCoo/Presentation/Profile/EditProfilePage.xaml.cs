@@ -7,13 +7,10 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace HousingCoo.Presentation
-{
+namespace HousingCoo.Presentation.Profile {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MasterMenuPageDetail : ContentPage
-    {
-        public MasterMenuPageDetail()
-        {
+    public partial class EditProfilePage : ContentPage {
+        public EditProfilePage() {
             InitializeComponent();
         }
     }

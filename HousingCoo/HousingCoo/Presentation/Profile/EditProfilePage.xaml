@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Xamarin.Presentation.Pages;assembly=Xamarin.Presentation"
+             xmlns:social="clr-namespace:Xamarin.Presentation.Social;assembly=Xamarin.Presentation"
+             xmlns:profiles="clr-namespace:Xamarin.Presentation.Social.Profiles;assembly=Xamarin.Presentation"
+             xmlns:local="clr-namespace:HousingCoo.Presentation.Profile"
+             x:Class="HousingCoo.Presentation.Profile.EditProfilePage">
+    <ContentPage.BindingContext>
+        <local:EditProfilePresenter/>
+    </ContentPage.BindingContext>
+    <profiles:EditProfileView BindingContext="{Binding}" />
+</ContentPage>

@@ -3,21 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HousingCoo.Presentation.MasterMenuPageMaster"
              xmlns:crl="clr-namespace:Xamarin.Presentation.Controls;assembly=Xamarin.Presentation"
-             Title="Master">
+             x:Name="mastermenu">
     <StackLayout>
-        <ListView x:Name="MenuItemsListView"
+        <ListView
               SeparatorVisibility="None"
-              HasUnevenRows="true"              
-              ItemsSource="{Binding MenuItems}">
+              HasUnevenRows="true"  
+              ItemsSource="{Binding ViewState.MenuItems}">
             <ListView.Behaviors>
-                <crl:ListViewItemSelectedBehavior ItemSelected="{Binding ItemSelectedCommand}" />
+                <crl:ListViewItemSelectedBehavior ItemSelected="{Binding Source={x:Reference Name=mastermenu}, Path=BindingContext.Controller.ItemSelectedCommand}" />
             </ListView.Behaviors>
             <ListView.Header>
                 <StackLayout Padding="15,30,15,10" BackgroundColor="#03A9F4">
-                    <Image Source="InstagramLogo.png" HorizontalOptions="End" HeightRequest="50"></Image>
-                    <Image Source="icon.png" HorizontalOptions="Start" HeightRequest="50" ></Image>
-                    <Label Text="Binding AccountName}" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Start" />
-                    <Label Text="Binding AccountStatus}" TextColor="#E0E0E0" VerticalOptions="Center" HorizontalOptions="Start" />
+                    <Image Source="xamarin_logo.png" HorizontalOptions="End" HeightRequest="50"></Image>
+                    <Image Source="{Binding ViewState.AccountImage}" HorizontalOptions="Start" HeightRequest="50" ></Image>
+                    <Label Text="{Binding ViewState.AccountName}" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="Start" />
+                    <Label Text="{Binding ViewState.AccountStatus}" TextColor="#E0E0E0" VerticalOptions="Center" HorizontalOptions="Start" />
                 </StackLayout>
             </ListView.Header>
             <ListView.ItemTemplate>

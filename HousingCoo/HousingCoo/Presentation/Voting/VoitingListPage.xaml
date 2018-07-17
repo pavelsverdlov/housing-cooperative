@@ -22,7 +22,7 @@
         <pages:PageNavigatorBehavior Page="{Binding Source={x:Reference Name=page}, Path=BindingContext.Page}" />
     </ContentPage.Behaviors>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add new voting" Command="{Binding Controller.AddNewVoting}" />
+        <ToolbarItem Text="Add new voting" Command="{Binding Source={x:Reference Name=page}, Path=BindingContext.Controller.AddNewVoting}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <lv:ExtendedListView 

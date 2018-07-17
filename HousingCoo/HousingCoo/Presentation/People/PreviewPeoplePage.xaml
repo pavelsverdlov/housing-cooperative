@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Xamarin.Presentation.Pages;assembly=Xamarin.Presentation"
+             xmlns:social="clr-namespace:Xamarin.Presentation.Social.Profiles;assembly=Xamarin.Presentation"
+             xmlns:local="clr-namespace:HousingCoo.Presentation.People"
+             x:Class="HousingCoo.Presentation.People.PreviewPeoplePage"
+             x:Name="page">
+    <ContentPage.BindingContext>
+        <local:PreviewPeoplePresenter/>
+    </ContentPage.BindingContext>
+    <ContentPage.Behaviors>
+        <pages:PageNavigatorBehavior Page="{Binding  Source={x:Reference Name=page}, Path=BindingContext.Page}" />
+    </ContentPage.Behaviors>
+    <social:PreviewProfileView  />
+</ContentPage>

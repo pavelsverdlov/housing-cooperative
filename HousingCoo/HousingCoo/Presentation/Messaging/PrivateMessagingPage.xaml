@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:HousingCoo.Presentation.Messaging"
+             xmlns:pages="clr-namespace:Xamarin.Presentation.Pages;assembly=Xamarin.Presentation"
+             xmlns:social="clr-namespace:Xamarin.Presentation.Social.Messaging;assembly=Xamarin.Presentation"
+             x:Name="page"
+             x:Class="HousingCoo.Presentation.Messaging.PrivateMessagingPage">
+    <ContentPage.BindingContext>
+        <local:PrivateMessagingPresenter/>
+    </ContentPage.BindingContext>
+    <ContentPage.Behaviors>
+        <pages:PageNavigatorBehavior Page="{Binding Source={x:Reference Name=page}, Path=BindingContext.Page}" />
+    </ContentPage.Behaviors>
+    <social:PrivateMessagingView BindingContext="{Binding}"/>
+</ContentPage>

@@ -1,5 +1,8 @@
 ﻿using HousingCoo.Data;
 using HousingCoo.Domain.Interactors;
+using HousingCoo.Presentation.Messaging;
+using HousingCoo.Presentation.People;
+using HousingCoo.Presentation.Profile;
 using HousingCoo.Presentation.Voting;
 using Xamarin.Presentation;
 using Xamarin.Presentation.DI;
@@ -25,6 +28,12 @@ namespace HousingCoo {
         protected override void Registration() {
             Map<VotingDetailPage, VotingDetailPresenter> ();
             Map<VoitingListPage, VotingListPresenter>();
+            Map<AddNewVotingPage, AddNewVotingPresenter>();
+            Map<PrivateMessagingPage, PrivateMessagingPresenter>();
+            Map<PreviewPeoplePage, PreviewPeoplePresenter>();
+            Map<EditProfilePage, EditProfilePresenter>();
+            
+
         }
     }
 

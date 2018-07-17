@@ -1,15 +1,11 @@
-﻿using HousingCoo.Presentation.Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Presentation.Controls;
 using Xamarin.Presentation.Framework.VSVVM;
+using Xamarin.Presentation.Infrastructure;
 using Xamarin.Presentation.Pages;
 using Xamarin.Presentation.Social.States;
 
-namespace HousingCoo.Presentation.Notification
-{
+namespace HousingCoo.Presentation.Notification {
     public class NotificationListController : BaseController, IItemSelectedController<CommentViewState> {
         public Command<CommentViewState> ItemSelectedCommand { get; }
 
@@ -23,7 +19,7 @@ namespace HousingCoo.Presentation.Notification
     public class NotificationListViewState : CollectionViewState<CommentViewState> {
         public NotificationListViewState() {
             for (var i = 0; i < 10; ++i) {
-                ViewCollection.Add(new CommentViewState { IconSource = "icon.png", Message = "School for March 2018",
+                ViewCollection.Add(new CommentViewState { IconSource = "payment.png", Message = "School for March 2018",
                     Title = $"Monthly payment 1{i}0$" });
             }
         }

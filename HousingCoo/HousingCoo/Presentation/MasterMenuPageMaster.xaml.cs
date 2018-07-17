@@ -15,8 +15,8 @@ namespace HousingCoo.Presentation {
         public MasterMenuPageMaster() {
             InitializeComponent();
 
-            BindingContext = new MasterMenuPageMasterViewModel();
-            ListView = MenuItemsListView;
+            //BindingContext = new MasterMenuPageMasterViewModel();
+            //ListView = MenuItemsListView;
         }
 
         private class MasterMenuPageMasterViewModel : INotifyPropertyChanged {
@@ -27,8 +27,8 @@ namespace HousingCoo.Presentation {
             public MasterMenuPageMasterViewModel() {
                 MenuItems = new ObservableCollection<NavPageMenuItem>(new[]
                 {
-                    new NavPageMenuItem { Id = 0, Title = "Personal Information" },
-                    new NavPageMenuItem { Id = 1, Title = "Cashbox" },
+                    new NavPageMenuItem { Id = 0, Title = "Personal Information", TargetType = typeof(Profile.EditProfilePage) },
+                    new NavPageMenuItem { Id = 1, Title = "Cashbox" ,TargetType = typeof(Profile.EditProfilePage) },
                     //new MasterMenuPageMenuItem { Id = 2, Title = "Page 3" },
                     //new MasterMenuPageMenuItem { Id = 3, Title = "Page 4" },
                     //new MasterMenuPageMenuItem { Id = 4, Title = "Page 5" },
@@ -37,7 +37,6 @@ namespace HousingCoo.Presentation {
             }
 
             private void OnItemSelected(object obj) {
-                
             }
 
             #region INotifyPropertyChanged Implementation

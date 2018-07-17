@@ -1,6 +1,5 @@
 ﻿using HousingCoo.Domain.Interactors;
 using HousingCoo.Domain.Model;
-using HousingCoo.Presentation.Common;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
@@ -8,6 +7,7 @@ using Xamarin.Forms;
 using Xamarin.Presentation;
 using Xamarin.Presentation.Controls;
 using Xamarin.Presentation.Framework.VSVVM;
+using Xamarin.Presentation.Infrastructure;
 using Xamarin.Presentation.Navigation;
 using Xamarin.Presentation.Pages;
 using Xamarin.Presentation.Social;
@@ -17,22 +17,22 @@ namespace HousingCoo.Presentation.Voting {
     public class VotingListController : BaseController, IActivityHeaderController, IItemSelectedController<VotingHeaderPresenter> {
         public Command<VotingHeaderPresenter> ItemSelectedCommand { get; }
         public ICommand AddNewVoting { get; }
-        
+
         public Command<ButtonModel> ClickCommand { get; }
 
-        public VotingListPresenter VM;
+        public VotingListPresenter Presenter;
         public VotingListController() {
             ClickCommand = new Command<ButtonModel>(OnClick);
             ItemSelectedCommand = new Command<VotingHeaderPresenter>(OnItemSelected);
             AddNewVoting = new Command(OnAddNewVoting);
         }
 
-        void OnAddNewVoting(object _) {
-
+        private void OnAddNewVoting(object _) {
+            Presenter.OpenAddNewVoitingPage();
         }
 
         private void OnItemSelected(VotingHeaderPresenter vm) {
-            VM.OnVotingSelected(vm.ViewState, vm.Model);
+            Presenter.OnVotingSelected(vm.ViewState, vm.Model);
         }
 
         private void OnClick(ButtonModel obj) {
@@ -40,7 +40,7 @@ namespace HousingCoo.Presentation.Voting {
         }
     }
     public class VotingListViewState : CollectionViewState<VotingHeaderPresenter> {
-        
+
     }
 
     public class VotingHeaderPresenter : ActivityHeaderPresenter<VotingListController> {
@@ -65,10 +65,10 @@ namespace HousingCoo.Presentation.Voting {
             this.commutator = commutator;
             this.sender = sender;
             Page = new PageNavigatorViewModel() { IconSource = StaticResources.Icons.HomeWhite };
-            Controller.VM = this;
+            Controller.Presenter = this;
             PullToRefresh = new ListViewPullToRefreshViewModel();
             PullToRefresh.Refreshed += OnListRefreshed;
-          //  PullToRefresh.IsRefreshing = true;
+            //  PullToRefresh.IsRefreshing = true;
             sender.ReceiveNextPage(this);
         }
         public void OnPageReceived(IEnumerable<VotingModel> votings) {
@@ -100,8 +100,14 @@ namespace HousingCoo.Presentation.Voting {
                 vm.ShowVoting(viewState, model);
             } catch (Exception ex) {
                 logger.Error(ex);
-            }            
+            }
         }
-
+        public async void OpenAddNewVoitingPage() {
+            try {
+                await commutator.GoToPage<AddNewVotingPresenter>(this.Page.Navigation);
+            } catch (Exception ex) {
+                logger.Error(ex);
+            }
+        }
     }
 }

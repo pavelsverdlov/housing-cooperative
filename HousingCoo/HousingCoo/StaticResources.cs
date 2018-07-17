@@ -4,6 +4,8 @@
             Icons = new Icon();
         }
 
+        public const string DateTimeFormat = "MM/dd/yy HH:mm tt";
+
         public static Icon Icons { get; }
 
         public class Icon {

@@ -18,4 +18,13 @@ namespace HousingCoo.Domain.Entities {
         public string Actor { get; set; }
         public string Message { get; set; }
     }
+    public enum NotificationTypes {
+        Undefined,
+
+    }
+    public class NotificationEntity : Entity {
+        public string Title { get; set; }
+        public string Message { get; set; }
+        public NotificationTypes Type { get; set; }
+    }
 }

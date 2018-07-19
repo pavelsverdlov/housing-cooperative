@@ -50,12 +50,12 @@ namespace HousingCoo.Presentation.Voting {
         }
     }
     public class VotingListPresenter : BasePresenter<VotingListViewState, VotingListController>,
-        IVotingListConsumer {
+        IVotingListConsumer, IPageNavigatorSupporting {
         readonly ICommutator commutator;
         readonly IVotingListProducer sender;
         readonly IXamLogger logger;
         public ListViewPullToRefreshViewModel PullToRefresh { get; }
-        public IPageNavigator Page { get; }
+        public IPageNavigator PageNavigator { get; }
         public VotingListPresenter() : this(
             Bootstrapper.Instance.Resolver.Get<IXamLogger>(),
             Bootstrapper.Instance.Resolver.Get<ICommutator>(),
@@ -64,7 +64,10 @@ namespace HousingCoo.Presentation.Voting {
             this.logger = logger;
             this.commutator = commutator;
             this.sender = sender;
-            Page = new PageNavigatorViewModel() { IconSource = StaticResources.Icons.HomeWhite };
+            PageNavigator = new PageNavigatorViewModel() {
+                IconSource = StaticResources.Icons.HomeWhite,
+                Title = "Voiting"
+            };
             Controller.Presenter = this;
             PullToRefresh = new ListViewPullToRefreshViewModel();
             PullToRefresh.Refreshed += OnListRefreshed;
@@ -80,15 +83,13 @@ namespace HousingCoo.Presentation.Voting {
                     (nameof(ActivityViewState.ActorName), item.ActorName),
                     (nameof(ActivityViewState.Body), item.Body),
                     (nameof(ActivityViewState.Dates), new ActivityDatesState {
-                        DateCreated = item.DateOpened.ToString("MM/dd HH:mm"),
-                        DateClosed = item.DateClosed.ToString("MM/dd HH:mm"),
+                        DateCreated = item.DateOpened.ToString("MM dd"),
+                        DateClosed = item.DateClosed.ToString("MM dd"),
                     }),
                     (nameof(ActivityViewState.Verb), item.Verb)
                 );
-                list.Add(vm);
+                ViewState.ViewCollection.Add(vm);
             }
-
-            ViewState.Push((nameof(VotingListViewState.ViewCollection), list));
             //PullToRefresh.IsRefreshing = false;
         }
         private void OnListRefreshed() {
@@ -96,7 +97,7 @@ namespace HousingCoo.Presentation.Voting {
         }
         public async void OnVotingSelected(ActivityViewState viewState, VotingModel model) {
             try {
-                var vm = await commutator.GoToPage<VotingDetailPresenter>(Page.Navigation);
+                var vm = await commutator.GoToPage<VotingDetailPresenter>(PageNavigator.Navigation);
                 vm.ShowVoting(viewState, model);
             } catch (Exception ex) {
                 logger.Error(ex);
@@ -104,7 +105,7 @@ namespace HousingCoo.Presentation.Voting {
         }
         public async void OpenAddNewVoitingPage() {
             try {
-                await commutator.GoToPage<AddNewVotingPresenter>(this.Page.Navigation);
+                await commutator.GoToPage<AddNewVotingPresenter>(this.PageNavigator.Navigation);
             } catch (Exception ex) {
                 logger.Error(ex);
             }

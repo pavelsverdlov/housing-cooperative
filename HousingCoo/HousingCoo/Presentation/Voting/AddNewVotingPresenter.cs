@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Presentation.Framework.VSVVM;
+using Xamarin.Presentation.Pages;
 using Xamarin.Presentation.Social;
 using Xamarin.Presentation.Social.States;
 
@@ -29,8 +30,16 @@ namespace HousingCoo.Presentation.Voting {
 
         }
     }
-    public class AddNewVotingPresenter : BasePresenter<AddNewVotingViewState, AddNewVotingController> {
+    public class AddNewVotingPresenter : BasePresenter<AddNewVotingViewState, AddNewVotingController>,
+        IPageNavigatorSupporting {
         //
+        public IPageNavigator PageNavigator { get; }
+
+        public AddNewVotingPresenter() {
+            PageNavigator = new PageNavigatorViewModel {
+                Title = "Add new voiting"
+            };
+        }
     }
 
 

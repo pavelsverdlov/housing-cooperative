@@ -76,11 +76,11 @@ namespace HousingCoo.Presentation.Messaging {
         IExtendedListPullToRefreshSupported,
         IPageNavigatorSupporting {
 
-        public IPageNavigator Page { get; }
+        public IPageNavigator PageNavigator { get; }
         public ListViewPullToRefreshViewModel PullToRefresh { get; }
 
         public PrivateMessagingPresenter() {
-            Page = new PageNavigatorViewModel() { IconSource = StaticResources.Icons.MessageWhite };
+            PageNavigator = new PageNavigatorViewModel() { IconSource = StaticResources.Icons.MessageWhite };
             PullToRefresh = new ListViewPullToRefreshViewModel();
         }
 
@@ -90,7 +90,7 @@ namespace HousingCoo.Presentation.Messaging {
         }
 
         public void ShowMessagingWith(PeopleViewState vs) {
-            Page.Title = vs.Name;
+            PageNavigator.Title = vs.Name;
             ViewState.Push(
                 (nameof(PrivateMessagingViewState.IconSource), vs.IconSource),
                 (nameof(PrivateMessagingViewState.UserName), vs.Name),
@@ -99,13 +99,11 @@ namespace HousingCoo.Presentation.Messaging {
         }
 
         internal void AddNewComment(string message) {
-            var list = ViewState.ViewCollection.ToList();
-            list.Add(new PrivateMessageViewState {
+            ViewState.ViewCollection.Add(new PrivateMessageViewState {
                 Type = PrivateMessageTypes.Outgoing,
                 Date = DateTime.Now.ToString(StaticResources.DateTimeFormat),
                 Message = message
             });
-            ViewState.Push((nameof(PrivateMessagingViewState.ViewCollection),list));
         }
     }
 

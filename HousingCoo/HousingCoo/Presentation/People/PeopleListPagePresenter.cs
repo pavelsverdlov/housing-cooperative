@@ -32,13 +32,16 @@ namespace HousingCoo.Presentation.People {
         readonly ICommutator commutator;
 
         public ListViewPullToRefreshViewModel PullToRefresh { get; }
-        public IPageNavigator Page { get; }
+        public IPageNavigator PageNavigator { get; }
 
         public PeopleListPagePresenter() : this(
           Bootstrapper.Instance.Resolver.Get<IXamLogger>(),
           Bootstrapper.Instance.Resolver.Get<ICommutator>()) { }
         public PeopleListPagePresenter(IXamLogger logger, ICommutator commutator) {
-            Page = new PageNavigatorViewModel() { IconSource = StaticResources.Icons.PeopleWhite };
+            PageNavigator = new PageNavigatorViewModel() {
+                Title ="People",
+                IconSource = StaticResources.Icons.PeopleWhite
+            };
             PullToRefresh = new ListViewPullToRefreshViewModel();
             PullToRefresh.Refreshed += OnListRefreshed;
             this.logger = logger;
@@ -56,7 +59,7 @@ namespace HousingCoo.Presentation.People {
 
         internal async void ShowPeoplePreview(PeopleViewState vs) {
             try {
-                var pres = await commutator.GoToPage<PreviewPeoplePresenter>(Page.Navigation);
+                var pres = await commutator.GoToPage<PreviewPeoplePresenter>(PageNavigator.Navigation);
                 pres.ShowPeople(vs);
             } catch(Exception ex) {
                 logger.Error(ex);

@@ -9,33 +9,23 @@
              xmlns:not="clr-namespace:HousingCoo.Presentation.Notification"
              xmlns:presen="clr-namespace:HousingCoo.Presentation" Title="MasterDetailPage"
             x:Name="page">
-    
+    <!--Use MasterDetailPage > NavigationPage OR TabbedPage > NavigationPage BUT NOT MasterDetailPage > TabbedPage.-->
     <MasterDetailPage.BindingContext>
         <presen:MasterDetailPresenter />
     </MasterDetailPage.BindingContext>
-    
+
     <MasterDetailPage.Master>
         <presen:MasterMenuPageMaster Title="Need to set :(" BindingContext="{Binding}" />
     </MasterDetailPage.Master>
-    
-    <MasterDetailPage.Detail>
-        <NavigationPage Title="Browse">
-            <NavigationPage.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="iOS" Value="tab_feed.png"/>
-                </OnPlatform>
-            </NavigationPage.Icon>
-            <x:Arguments>
-                <TabbedPage>
 
-                    <voting:VoitingListPage />
-                    <people:PeopleListPage />
-                    <mess:PrivateMessageListPage />
-                    <not:NotificationListPage />
-                   
-                </TabbedPage>
+    <MasterDetailPage.Detail>
+       
+        <NavigationPage>
+            <x:Arguments>
+                <voting:VoitingListPage />
             </x:Arguments>
         </NavigationPage>
+
     </MasterDetailPage.Detail>
 
     <MasterDetailPage.Behaviors>

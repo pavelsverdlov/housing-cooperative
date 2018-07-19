@@ -12,7 +12,7 @@
         <local:VotingDetailPresenter/>
     </ContentPage.BindingContext>
     <ContentPage.Behaviors>
-        <pages:PageNavigatorBehavior BindingContext="{x:Reference page}" Page="{Binding BindingContext.PageNavigator}" />
+        <pages:PageNavigatorBehavior Page="{Binding Source={x:Reference Name=page}, Path=BindingContext.PageNavigator}" />
     </ContentPage.Behaviors>
     <ContentPage.Content>
         <!--<social:ActivityDetailsPage BindingContext="{Binding}" />-->

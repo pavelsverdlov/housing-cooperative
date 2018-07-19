@@ -19,10 +19,10 @@
         <local:VotingListPresenter/>
     </ContentPage.BindingContext>
     <ContentPage.Behaviors>
-        <pages:PageNavigatorBehavior Page="{Binding Source={x:Reference Name=page}, Path=BindingContext.Page}" />
+        <pages:PageNavigatorBehavior Page="{Binding Source={x:Reference Name=page}, Path=BindingContext.PageNavigator}" />
     </ContentPage.Behaviors>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add new voting" Command="{Binding Source={x:Reference Name=page}, Path=BindingContext.Controller.AddNewVoting}" />
+        <ToolbarItem Icon="baseline_create_white_24dp.png" Command="{Binding Source={x:Reference Name=page}, Path=BindingContext.Controller.AddNewVoting}" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <lv:ExtendedListView 

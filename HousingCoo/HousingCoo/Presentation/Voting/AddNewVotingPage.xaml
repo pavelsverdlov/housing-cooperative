@@ -11,5 +11,8 @@
     <ContentPage.BindingContext>
         <local:AddNewVotingPresenter/>
     </ContentPage.BindingContext>
+    <ContentPage.Behaviors>
+        <pages:PageNavigatorBehavior Page="{Binding Source={x:Reference Name=page}, Path=BindingContext.PageNavigator}" />
+    </ContentPage.Behaviors>
     <social:AddNewActivityView BindingContext="{Binding}" />
 </ContentPage>

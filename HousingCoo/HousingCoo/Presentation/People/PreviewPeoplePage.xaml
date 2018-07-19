@@ -10,7 +10,7 @@
         <local:PreviewPeoplePresenter/>
     </ContentPage.BindingContext>
     <ContentPage.Behaviors>
-        <pages:PageNavigatorBehavior Page="{Binding  Source={x:Reference Name=page}, Path=BindingContext.Page}" />
+        <pages:PageNavigatorBehavior Page="{Binding  Source={x:Reference Name=page}, Path=BindingContext.PageNavigator}" />
     </ContentPage.Behaviors>
     <social:PreviewProfileView  />
 </ContentPage>

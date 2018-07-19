@@ -19,9 +19,12 @@
     <ContentPage.BindingContext>
         <local:PeopleListPagePresenter/>
     </ContentPage.BindingContext>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Icon="baseline_person_add_white_24dp.png" Command="{Binding Source={x:Reference Name=page}, Path=BindingContext.Controller.AddNewPerson}" />
+    </ContentPage.ToolbarItems>
     <ContentPage.Behaviors>
-        <pages:PageNavigatorBehavior Page="{Binding  Source={x:Reference Name=page}, Path=BindingContext.Page}" />
-    </ContentPage.Behaviors>
+        <pages:PageNavigatorBehavior Page="{Binding  Source={x:Reference Name=page}, Path=BindingContext.PageNavigator}" />
+    </ContentPage.Behaviors> 
     <ContentPage.Content>
         <lv:ExtendedListView 
                              ItemTemplate="{StaticResource PeopleView}"

@@ -28,18 +28,22 @@ namespace HousingCoo.Presentation.Messaging {
             }
         }
     }
-    public class PrivateMessListPresenter : BasePresenter<PrivateMessListViewState, PrivateMessListController> {
+    public class PrivateMessListPresenter : BasePresenter<PrivateMessListViewState, PrivateMessListController>,
+        IPageNavigatorSupporting {
         readonly IXamLogger logger;
         readonly ICommutator commutator;
 
         public ListViewPullToRefreshViewModel PullToRefresh { get; }
-        public IPageNavigator Page { get; }
+        public IPageNavigator PageNavigator { get; }
 
         public PrivateMessListPresenter() : this(
           Bootstrapper.Instance.Resolver.Get<IXamLogger>(),
           Bootstrapper.Instance.Resolver.Get<ICommutator>()) { }
         public PrivateMessListPresenter(IXamLogger logger, ICommutator commutator) {
-            Page = new PageNavigatorViewModel() { IconSource = StaticResources.Icons.MessageWhite };
+            PageNavigator = new PageNavigatorViewModel() {
+                IconSource = StaticResources.Icons.MessageWhite,
+                Title = "Private messages"
+            };
             PullToRefresh = new ListViewPullToRefreshViewModel();
             PullToRefresh.Refreshed += OnListRefreshed;
             this.logger = logger;
@@ -57,7 +61,7 @@ namespace HousingCoo.Presentation.Messaging {
 
         public async void ShowPrivateMessagingWith(PeopleViewState vs) {
             try {
-                var vm = await commutator.GoToPage<PrivateMessagingPresenter>(Page.Navigation);
+                var vm = await commutator.GoToPage<PrivateMessagingPresenter>(PageNavigator.Navigation);
                 vm.ShowMessagingWith(vs);
             } catch (Exception ex) {
                 logger.Error(ex);

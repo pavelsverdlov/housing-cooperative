@@ -5,9 +5,13 @@
              xmlns:social="clr-namespace:Xamarin.Presentation.Social;assembly=Xamarin.Presentation"
              xmlns:profiles="clr-namespace:Xamarin.Presentation.Social.Profiles;assembly=Xamarin.Presentation"
              xmlns:local="clr-namespace:HousingCoo.Presentation.Profile"
-             x:Class="HousingCoo.Presentation.Profile.EditProfilePage">
+             x:Class="HousingCoo.Presentation.Profile.EditProfilePage"
+             x:Name="page">
     <ContentPage.BindingContext>
         <local:EditProfilePresenter/>
     </ContentPage.BindingContext>
+    <ContentPage.Behaviors>
+        <pages:PageNavigatorBehavior Page="{Binding Source={x:Reference Name=page}, Path=BindingContext.PageNavigator}" />
+    </ContentPage.Behaviors>
     <profiles:EditProfileView BindingContext="{Binding}" />
 </ContentPage>

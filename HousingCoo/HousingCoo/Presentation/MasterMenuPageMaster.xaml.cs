@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Xamarin.Presentation.Pages;
+using Xamarin.Presentation.Pages.Menu;
 
 namespace HousingCoo.Presentation {
     [XamlCompilation(XamlCompilationOptions.Compile)]

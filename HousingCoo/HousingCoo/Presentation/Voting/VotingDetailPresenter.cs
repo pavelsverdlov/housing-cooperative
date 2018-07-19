@@ -58,11 +58,11 @@ namespace HousingCoo.Presentation.Voting {
 
     public class VotingDetailPresenter : BasePresenter<VotingViewState, VotingController>,
         IActivityDetailsView<VotingController, VotingController>,
-        IVotingCommentsConsumer {
+        IVotingCommentsConsumer, IPageNavigatorSupporting {
 
         public ActivityDetailPresenter<VotingController> DetailViewModel { get; }
         public ActivityHeaderPresenter<VotingController> HeaderViewModel { get; }
-        public IPageNavigator Page { get; }
+        public IPageNavigator PageNavigator { get; }
         public ListViewPullToRefreshViewModel PullToRefresh { get; }
 
         public VotingModel Model { get; private set; }
@@ -76,7 +76,7 @@ namespace HousingCoo.Presentation.Voting {
             this.sender = sender;
             PullToRefresh = new ListViewPullToRefreshViewModel();
             PullToRefresh.Refreshed += OnPullToRefreshed;
-            Page = new PageNavigatorViewModel();
+            PageNavigator = new PageNavigatorViewModel { Title = "Detail" };
             HeaderViewModel = new ActivityHeaderPresenter<VotingController>();
             DetailViewModel = new ActivityDetailPresenter<VotingController>();
             DetailViewModel.Controller.Presenter = this;
@@ -87,7 +87,7 @@ namespace HousingCoo.Presentation.Voting {
         }
         public void ShowVoting(ActivityViewState viewState, VotingModel model) {
             this.Model = model;
-            Page.Title = viewState.Title;
+            PageNavigator.Title = viewState.Title;
             HeaderViewModel.ViewState.Push(viewState);
             PullToRefresh.IsRefreshing = true;
             sender.ReceiveComments(this);

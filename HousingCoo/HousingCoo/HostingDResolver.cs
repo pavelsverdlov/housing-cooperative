@@ -18,27 +18,28 @@ namespace HousingCoo {
 
             Register<IVotingListProducer, VotingListInteractor>();
             Register<IVotingCommentsProducer, VotingListInteractor>();
+            Register<INotificationProducer, VotingListInteractor>();
 
-            Register<ICommutator, HostingNAdapter> ();
+            Register<ICommutator, HostingNAdapter>();
 
         }
     }
 
     public class HostingVMContainer : ViewModelContainer {
         protected override void Registration() {
-            Map<VotingDetailPage, VotingDetailPresenter> ();
+            Map<VotingDetailPage, VotingDetailPresenter>();
             Map<VoitingListPage, VotingListPresenter>();
             Map<AddNewVotingPage, AddNewVotingPresenter>();
             Map<PrivateMessagingPage, PrivateMessagingPresenter>();
             Map<PreviewPeoplePage, PreviewPeoplePresenter>();
             Map<EditProfilePage, EditProfilePresenter>();
-            
+
 
         }
     }
 
     public class HostingNAdapter : NavigationAdapter {
-        public HostingNAdapter() :this(Bootstrapper.Instance.Resolver.GetAsSingleton<HostingVMContainer>()) { }
-        public HostingNAdapter(ViewModelContainer container) : base(container) {}
+        public HostingNAdapter() : this(Bootstrapper.Instance.Resolver.GetAsSingleton<HostingVMContainer>()) { }
+        public HostingNAdapter(ViewModelContainer container) : base(container) { }
     }
 }

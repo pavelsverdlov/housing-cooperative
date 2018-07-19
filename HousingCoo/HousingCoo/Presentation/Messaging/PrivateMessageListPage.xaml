@@ -17,8 +17,11 @@
     <ContentPage.BindingContext>
         <local:PrivateMessListPresenter/>
     </ContentPage.BindingContext>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Icon="ic_message_white_24dp.png" Command="{Binding Source={x:Reference Name=page}, Path=BindingContext.Controller.SendMessage}" />
+    </ContentPage.ToolbarItems>
     <ContentPage.Behaviors>
-        <pages:PageNavigatorBehavior Page="{Binding Source={x:Reference Name=page}, Path=BindingContext.Page}" />
+        <pages:PageNavigatorBehavior Page="{Binding Source={x:Reference Name=page}, Path=BindingContext.PageNavigator}" />
     </ContentPage.Behaviors>
     <ContentPage.Content>
         <lv:ExtendedListView 

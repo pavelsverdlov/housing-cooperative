@@ -21,10 +21,10 @@ namespace HousingCoo.Presentation.People {
 
 
     public class PreviewPeoplePresenter : BasePresenter<PreviewPeopleViewState, PreviewPeopleController>, IPageNavigatorSupporting {
-        public IPageNavigator Page { get; }
+        public IPageNavigator PageNavigator { get; }
 
         public PreviewPeoplePresenter() {
-            Page = new PageNavigatorViewModel();
+            PageNavigator = new PageNavigatorViewModel { Title = "People" };
         }
 
         public void ShowPeople(PeopleViewState vs) {
@@ -35,7 +35,7 @@ namespace HousingCoo.Presentation.People {
                 (nameof(PreviewPeopleViewState.ProfileName), vs.Name)
                 //(nameof(PreviewPeopleViewState.), vs.Info)
                 );
-            Page.Title = vs.Name;
+            PageNavigator.Title = vs.Name;
         }
     }
 

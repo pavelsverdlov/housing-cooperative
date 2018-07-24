@@ -53,10 +53,9 @@
     <EmbeddedResource Update="Presentation\Voting\VotingDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Presentation\Common\" />
+    <EmbeddedResource Update="Presentation\Voting\VotingListView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

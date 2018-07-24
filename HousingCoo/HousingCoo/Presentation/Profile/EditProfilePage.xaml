@@ -10,6 +10,9 @@
     <ContentPage.BindingContext>
         <local:EditProfilePresenter/>
     </ContentPage.BindingContext>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save" Command="{Binding Source={x:Reference Name=page}, Path=BindingContext.Controller.SaveNewPerson}" />
+    </ContentPage.ToolbarItems>
     <ContentPage.Behaviors>
         <pages:PageNavigatorBehavior Page="{Binding Source={x:Reference Name=page}, Path=BindingContext.PageNavigator}" />
     </ContentPage.Behaviors>

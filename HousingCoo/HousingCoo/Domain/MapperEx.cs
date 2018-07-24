@@ -7,7 +7,7 @@ namespace HousingCoo.Domain {
         public static IEnumerable<TOut> Map<TIn, TOut>(this IEnumerable<TIn> source) {
             return source.Select(x => Mapper.Map<TOut>(x));
         }
-        public static TOut Map<TIn, TOut>(this TIn source) {
+        public static TOut Map<TOut>(this object source) {
             return Mapper.Map<TOut>(source);
         }
     }

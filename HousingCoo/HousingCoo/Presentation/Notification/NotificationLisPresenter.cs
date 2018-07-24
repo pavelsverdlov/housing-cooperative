@@ -40,7 +40,7 @@ namespace HousingCoo.Presentation.Notification {
            Bootstrapper.Instance.Resolver.Get<IXamLogger>(),
            Bootstrapper.Instance.Resolver.Get<INotificationProducer>()) { }
         public NotificationLisPresenter(IXamLogger logger, INotificationProducer producer) {
-            PageNavigator = new PageNavigatorViewModel() {
+            PageNavigator = new PageNavigatorAdapter () {
                 IconSource = StaticResources.Icons.StarGold,
                 Title = "Notifications"
             };

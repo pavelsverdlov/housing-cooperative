@@ -9,7 +9,7 @@ namespace HousingCoo.Presentation.Auth {
         public PageStates State { get; }
 
         public UserSignInPresenter() {
-            Page = new PageNavigatorViewModel();
+            Page = new PageNavigatorAdapter ();
             State = PageStates.Normal;
         }
 

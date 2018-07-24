@@ -1,11 +1,12 @@
-﻿using System;
+﻿using HousingCoo.Domain.Interactors;
+using HousingCoo.Domain.Model;
+using HousingCoo.Presentation.Common;
+using System;
+using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Presentation;
-using Xamarin.Presentation.Controls;
 using Xamarin.Presentation.Framework.VSVVM;
 using Xamarin.Presentation.Infrastructure;
-using Xamarin.Presentation.Navigation;
-using Xamarin.Presentation.Pages;
 using Xamarin.Presentation.Social.States;
 
 namespace HousingCoo.Presentation.People {
@@ -13,57 +14,75 @@ namespace HousingCoo.Presentation.People {
         internal PeopleListPagePresenter Presenter;
         public Command<PeopleViewState> ItemSelectedCommand { get; }
 
+        public Command AddNewPerson { get; }
+        public Command<PeopleViewState> RemovePerson { get; }
+
+
         public PeopleListController() {
             ItemSelectedCommand = new Command<PeopleViewState>(OnItemSelected);
+            AddNewPerson = new Command(OnAddNewPerson);
+            RemovePerson = new Command<PeopleViewState>(OnRemovePerson);
         }
-        void OnItemSelected(PeopleViewState vs) {
+
+        void OnRemovePerson(PeopleViewState obj) {
+            
+        }
+
+        private void OnAddNewPerson(object obj) {
+            Presenter.OpenEditProfile();
+        }
+
+        private void OnItemSelected(PeopleViewState vs) {
             Presenter.ShowPeoplePreview(vs);
         }
     }
-    public class PeopleListViewState : CollectionViewState <PeopleViewState> {
+    public class PeopleListViewState : CollectionViewState<PeopleViewState> {
         public PeopleListViewState() {
-            for(var i = 0; i < 10; ++i) {
-                ViewCollection.Add(new PeopleViewState { IconSource = "person.png", Name = "Name" + i, Info = "some info" + i });
-            }
+           
         }
     }
-    public class PeopleListPagePresenter : BasePresenter<PeopleListViewState, PeopleListController>, IPageNavigatorSupporting {
-        readonly IXamLogger logger;
-        readonly ICommutator commutator;
+    public class PeopleListPagePresenter : HousingDefCollectionPresenter<PeopleListViewState, PeopleListController, PeopleViewState>,
+        IPeopleListConsumer {
+        readonly IPeopleListProducer producer;
 
-        public ListViewPullToRefreshViewModel PullToRefresh { get; }
-        public IPageNavigator PageNavigator { get; }
-
-        public PeopleListPagePresenter() : this(
-          Bootstrapper.Instance.Resolver.Get<IXamLogger>(),
-          Bootstrapper.Instance.Resolver.Get<ICommutator>()) { }
-        public PeopleListPagePresenter(IXamLogger logger, ICommutator commutator) {
-            PageNavigator = new PageNavigatorViewModel() {
-                Title ="People",
-                IconSource = StaticResources.Icons.PeopleWhite
-            };
-            PullToRefresh = new ListViewPullToRefreshViewModel();
-            PullToRefresh.Refreshed += OnListRefreshed;
-            this.logger = logger;
-            this.commutator = commutator;
+        public PeopleListPagePresenter() : this(Bootstrapper.Instance.Resolver.Get<IPeopleListProducer>()) { }
+        public PeopleListPagePresenter(IPeopleListProducer producer) {
+            PageNavigator.Title = "People";
+            PageNavigator.IconSource = StaticResources.Icons.PeopleWhite;
+            producer.Receive(this);
+            this.producer = producer;
         }
-
+     
         protected override void Init(PeopleListViewState vs, PeopleListController con) {
             base.Init(vs, con);
             con.Presenter = this;
         }
 
-        void OnListRefreshed() {
-            
+        protected override void OnListRefreshed() {
+            producer.Receive(this);
+        }
+
+        internal async void OpenEditProfile() {
+            try {
+                Profile.EditProfilePresenter pres = await commutator.GoToPage<Profile.EditProfilePresenter>(PageNavigator.Navigation);
+            } catch (Exception ex) {
+                logger.Error(ex);
+            }
         }
 
         internal async void ShowPeoplePreview(PeopleViewState vs) {
             try {
-                var pres = await commutator.GoToPage<PreviewPeoplePresenter>(PageNavigator.Navigation);
+                PreviewPeoplePresenter pres = await commutator.GoToPage<PreviewPeoplePresenter>(PageNavigator.Navigation);
                 pres.ShowPeople(vs);
-            } catch(Exception ex) {
+            } catch (Exception ex) {
                 logger.Error(ex);
             }
         }
+
+
+        public void OnReceived(IEnumerable<PeopleModel> people) {
+            people.ForEach(x => ViewState.ViewCollection.Add(new PeopleViewState { IconSource = "person.png", Name = x.Name, Info = "some info" }));
+        }
+
     }
 }

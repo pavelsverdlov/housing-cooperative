@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HousingCoo.Domain.Model {
     public class Model {
@@ -9,7 +7,7 @@ namespace HousingCoo.Domain.Model {
     public class AccountModel : Model {
 
     }
-    public class VotingModel: Model {
+    public class VotingModel : Model {
         public string Title { get; set; }
         public string ActorName { get; set; }
         public string Verb { get; set; }
@@ -27,4 +25,16 @@ namespace HousingCoo.Domain.Model {
         public string Title { get; set; }
         public string Message { get; set; }
     }
+
+    public class PeopleModel : Model {
+        public string Name { get; set; }
+        public string LastMessageText { get; set; }
+    }
+
+    public class PrivateMessageModel : Model {
+        public string Message { get; set; }
+        public DateTime Date { get; set; }
+    }
+
+
 }

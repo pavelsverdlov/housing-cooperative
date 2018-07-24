@@ -24,7 +24,7 @@ namespace HousingCoo.Presentation.People {
         public IPageNavigator PageNavigator { get; }
 
         public PreviewPeoplePresenter() {
-            PageNavigator = new PageNavigatorViewModel { Title = "People" };
+            PageNavigator = new PageNavigatorAdapter  { Title = "People" };
         }
 
         public void ShowPeople(PeopleViewState vs) {

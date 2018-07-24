@@ -1,5 +1,6 @@
 ﻿using HousingCoo.Domain.Interactors;
 using HousingCoo.Domain.Model;
+using HousingCoo.Presentation.Common;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
@@ -49,29 +50,26 @@ namespace HousingCoo.Presentation.Voting {
             this.Model = item;
         }
     }
-    public class VotingListPresenter : BasePresenter<VotingListViewState, VotingListController>,
+
+    public class VotingListPresenter : HousingDefCollectionPresenter<VotingListViewState, VotingListController, VotingHeaderPresenter>,
         IVotingListConsumer, IPageNavigatorSupporting {
-        readonly ICommutator commutator;
+
         readonly IVotingListProducer sender;
-        readonly IXamLogger logger;
-        public ListViewPullToRefreshViewModel PullToRefresh { get; }
-        public IPageNavigator PageNavigator { get; }
-        public VotingListPresenter() : this(
-            Bootstrapper.Instance.Resolver.Get<IXamLogger>(),
-            Bootstrapper.Instance.Resolver.Get<ICommutator>(),
-            Bootstrapper.Instance.Resolver.Get<IVotingListProducer>()) { }
-        public VotingListPresenter(IXamLogger logger, ICommutator commutator, IVotingListProducer sender) {
-            this.logger = logger;
-            this.commutator = commutator;
+
+
+        public int Index => 0;
+
+        public VotingListPresenter() : this(Bootstrapper.Instance.Resolver.Get<IVotingListProducer>()) { }
+        public VotingListPresenter(IVotingListProducer sender) {
             this.sender = sender;
-            PageNavigator = new PageNavigatorViewModel() {
-                IconSource = StaticResources.Icons.HomeWhite,
-                Title = "Voiting"
+            PageNavigator.Title = "Voiting";
+            PageNavigator.ToolbarMenu = new List<ToolbarItem> {
+                new ToolbarItem(){
+                    Icon = "baseline_create_white_24dp.png",
+                    Command = Controller.AddNewVoting
+                }
             };
             Controller.Presenter = this;
-            PullToRefresh = new ListViewPullToRefreshViewModel();
-            PullToRefresh.Refreshed += OnListRefreshed;
-            //  PullToRefresh.IsRefreshing = true;
             sender.ReceiveNextPage(this);
         }
         public void OnPageReceived(IEnumerable<VotingModel> votings) {
@@ -83,17 +81,20 @@ namespace HousingCoo.Presentation.Voting {
                     (nameof(ActivityViewState.ActorName), item.ActorName),
                     (nameof(ActivityViewState.Body), item.Body),
                     (nameof(ActivityViewState.Dates), new ActivityDatesState {
-                        DateCreated = item.DateOpened.ToString("MM dd"),
-                        DateClosed = item.DateClosed.ToString("MM dd"),
+                        DateCreated = item.DateOpened.ToString("MM/dd/yyyy"),
+                        DateClosed = item.DateClosed.ToString("MM/dd/yyyy"),
                     }),
                     (nameof(ActivityViewState.Verb), item.Verb)
                 );
-                ViewState.ViewCollection.Add(vm);
+                vm.ViewState.ForcePush(nameof(ActivityViewState.Header));
+
+                ViewState.ViewCollection.Insert(0, vm);               
             }
             //PullToRefresh.IsRefreshing = false;
         }
-        private void OnListRefreshed() {
 
+        protected override void OnListRefreshed() {
+            sender.ReceiveNextPage(this);
         }
         public async void OnVotingSelected(ActivityViewState viewState, VotingModel model) {
             try {

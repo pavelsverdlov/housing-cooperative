@@ -3,12 +3,28 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HousingCoo.Presentation.MasterMenuPage"
              xmlns:pages="clr-namespace:Xamarin.Presentation.Pages;assembly=Xamarin.Presentation"
+             xmlns:tab="clr-namespace:Xamarin.Presentation.Pages.Tab;assembly=Xamarin.Presentation"
              xmlns:voting="clr-namespace:HousingCoo.Presentation.Voting"
              xmlns:people="clr-namespace:HousingCoo.Presentation.People"
              xmlns:mess="clr-namespace:HousingCoo.Presentation.Messaging"
              xmlns:not="clr-namespace:HousingCoo.Presentation.Notification"
              xmlns:presen="clr-namespace:HousingCoo.Presentation" Title="MasterDetailPage"
             x:Name="page">
+    <MasterDetailPage.Resources>
+        <!--<ControlTemplate x:Key="ct1">
+            <voting:VotingListView />
+        </ControlTemplate>
+        <ControlTemplate x:Key="ct2">
+            <Label Text="niddle"/>
+        </ControlTemplate>
+        <ControlTemplate x:Key="ct3">
+            <Label Text="right"/>
+        </ControlTemplate>
+        <tab:TestSelector x:Key="selector"
+            Template0="{StaticResource ct1}"
+            Template1="{StaticResource ct2}"
+            Template2="{StaticResource ct3}"/>-->
+    </MasterDetailPage.Resources>
     <!--Use MasterDetailPage > NavigationPage OR TabbedPage > NavigationPage BUT NOT MasterDetailPage > TabbedPage.-->
     <MasterDetailPage.BindingContext>
         <presen:MasterDetailPresenter />
@@ -19,10 +35,11 @@
     </MasterDetailPage.Master>
 
     <MasterDetailPage.Detail>
-       
+
         <NavigationPage>
             <x:Arguments>
-                <voting:VoitingListPage />
+                <!--<tab:TabPage TabControlSelector="{StaticResource selector}" BindingContext="{Binding TabPages}"/>-->
+                <voting:VoitingListPage/>
             </x:Arguments>
         </NavigationPage>
 

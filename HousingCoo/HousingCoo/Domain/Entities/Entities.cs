@@ -27,4 +27,19 @@ namespace HousingCoo.Domain.Entities {
         public string Message { get; set; }
         public NotificationTypes Type { get; set; }
     }
+
+    public class PeopleEntity : Entity {
+        public string Name { get; set; }
+        public string Info { get; set; }
+    }
+
+    public class PrivateMessageEntity : Entity {
+        public string Message { get; set; }
+        public DateTime Date { get; set; }
+        /// <summary>
+        /// Incoming  - 0
+        /// Outcoming - 1
+        /// </summary>
+        public byte Type { get; set; }
+    }
 }

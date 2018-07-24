@@ -3,7 +3,9 @@ using HousingCoo.Domain.Entities;
 using HousingCoo.Domain.Interactors;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Xamarin.Presentation;
 
 namespace HousingCoo.Data {
     public class DataGateway : IVotingsGateway {
@@ -37,6 +39,48 @@ namespace HousingCoo.Data {
 
                 return client.GetNextPage(votingsOnPage, pageNum);
             });
+        }
+
+        public Task<IEnumerable<PeopleEntity>> GetPeople(long companyId) {
+            return Task.Run(() => {
+
+                return (IEnumerable<PeopleEntity>)Storage.Instance.People[companyId];
+            });
+        }
+
+        public Task<IEnumerable<PrivateMessageEntity>> GetPrivateMessages(long userId, long peopleWithHumId) {
+            return Task.Run(() => {
+
+                return (IEnumerable<PrivateMessageEntity>)Storage.Instance.PrivateMesseges[userId];
+            });
+        }
+
+
+
+
+
+
+        public PeopleEntity AddPerson(int companyId, PeopleEntity entity) {
+            var community = Storage.Instance.People[companyId];
+            long max = 0;
+            if (community.Any()) {
+                max = community.Max(x => x.Id);
+            }
+            entity.Id = ++max;
+            community.Add(entity);
+
+            return entity;
+        }
+
+        public void RemovePerson(int companyId, long id) {
+            Storage.Instance.People[companyId]
+                .Where(x => x.Id == id)
+                .ForEach(x => Storage.Instance.People[companyId].Remove(x));
+            
+        }
+
+        public void AddCommentToVoting(int votingId, CommentVotingEntity en) {
+            Storage.Instance.Comments[votingId].Add(en);
         }
     }
 }

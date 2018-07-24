@@ -1,6 +1,10 @@
-﻿using System;
+﻿using HousingCoo.Domain.Interactors;
+using HousingCoo.Domain.Model;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xamarin.Forms;
+using Xamarin.Presentation;
 using Xamarin.Presentation.Controls;
 using Xamarin.Presentation.Framework.VSVVM;
 using Xamarin.Presentation.Infrastructure;
@@ -15,17 +19,21 @@ namespace HousingCoo.Presentation.Messaging {
         ICommentAddingController {
 
         internal PrivateMessagingPresenter Presenter;
+       
 
         public Command<PrivateMessageViewState> ItemSelectedCommand { get; }
         public Command<Entry> CommentAdded {get;}
         public Command CameraActivated {get;}
         public Command AttachFileActivated {get;}
 
+
+       
         public PrivateMessagingController() {
             ItemSelectedCommand = new Command<PrivateMessageViewState>(OnItemSelected);
             CommentAdded = new Command<Entry>(OnCommentAdded);
             CameraActivated = new Command<string>(OnCameraActivated);
             AttachFileActivated = new Command<string>(OnAttachFileActivated);
+            
         }
 
         void OnAttachFileActivated(string obj) {
@@ -59,13 +67,13 @@ namespace HousingCoo.Presentation.Messaging {
             CommenterIconSource = "person.png";
             AddCommentEntryPlaceholder = "Write a message ...";
 
-            for (int i = 0; i < 10; ++i) {
-                ViewCollection.Add(new PrivateMessageViewState {
-                    Type = i % 2 == 0 ? PrivateMessageTypes.Incoming : PrivateMessageTypes.Outgoing,
-                    Message = "A dorsal view of a female Nephila pilipes, a species of golden silk orb-weaver spider found in East and Southeast Asia as well as Australia.",
-                    Date = DateTime.Now.ToString(StaticResources.DateTimeFormat)
-                });
-            }
+            //for (int i = 0; i < 10; ++i) {
+            //    ViewCollection.Add(new PrivateMessageViewState {
+            //        Type = i % 2 == 0 ? PrivateMessageTypes.Incoming : PrivateMessageTypes.Outgoing,
+            //        Message = "A dorsal view of a female Nephila pilipes, a species of golden silk orb-weaver spider found in East and Southeast Asia as well as Australia.",
+            //        Date = DateTime.Now.ToString(StaticResources.DateTimeFormat)
+            //    });
+            //}
         }
     }
 
@@ -74,14 +82,29 @@ namespace HousingCoo.Presentation.Messaging {
         BasePresenter<PrivateMessagingViewState, PrivateMessagingController>,
         IPrivateMessagingPresenter<PrivateMessagingViewState>,
         IExtendedListPullToRefreshSupported,
-        IPageNavigatorSupporting {
+        IPageNavigatorSupporting,
+        IPrivateMessageListConsumer {
 
         public IPageNavigator PageNavigator { get; }
         public ListViewPullToRefreshViewModel PullToRefresh { get; }
 
-        public PrivateMessagingPresenter() {
-            PageNavigator = new PageNavigatorViewModel() { IconSource = StaticResources.Icons.MessageWhite };
+        public PeopleModel Account { get; private set; }
+        public PeopleModel MessageTo { get; private set; }
+
+        readonly IPrivateMessageListProducer producer;
+
+        public PrivateMessagingPresenter() : this(
+           Bootstrapper.Instance.Resolver.Get<IPrivateMessageListProducer>()) { }
+        public PrivateMessagingPresenter(IPrivateMessageListProducer producer) {
+            PageNavigator = new PageNavigatorAdapter () { IconSource = StaticResources.Icons.MessageWhite };
             PullToRefresh = new ListViewPullToRefreshViewModel();
+            this.producer = producer;
+
+            //todo: !
+            Account = new PeopleModel();
+            MessageTo = new PeopleModel();
+
+            producer.Receive(this);
         }
 
         protected override void Init(PrivateMessagingViewState vs, PrivateMessagingController con) {
@@ -104,6 +127,14 @@ namespace HousingCoo.Presentation.Messaging {
                 Date = DateTime.Now.ToString(StaticResources.DateTimeFormat),
                 Message = message
             });
+        }
+
+        public void OnReceived(IEnumerable<PrivateMessageModel> mm) {
+            var i = 0;
+            mm.ForEach(x => ViewState.ViewCollection.Add(new PrivateMessageViewState {
+                Date = x.Date.ToString(StaticResources.DateTimeFormat), Message = x.Message,
+                Type = i++ % 2 == 0? PrivateMessageTypes.Incoming : PrivateMessageTypes.Outgoing
+            }));
         }
     }
 

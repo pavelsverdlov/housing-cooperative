@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace HousingCoo.Presentation.People
+namespace HousingCoo.Presentation.Voting
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class PreviewPeoplePage : ContentPage
+	public partial class VotingListView : ContentView
 	{
-		public PreviewPeoplePage ()
+		public VotingListView ()
 		{
 			InitializeComponent ();
 		}
-    }
+	}
 }

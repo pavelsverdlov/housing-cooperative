@@ -1,8 +1,12 @@
-﻿using System.Windows.Input;
+﻿using HousingCoo.Domain.Interactors;
+using System;
+using System.Windows.Input;
 using Xamarin.Forms;
+using Xamarin.Presentation;
 using Xamarin.Presentation.Framework.VSVVM;
 using Xamarin.Presentation.Pages;
 using Xamarin.Presentation.Social;
+using Xamarin.Presentation.Social.Activities;
 using Xamarin.Presentation.Social.States;
 
 namespace HousingCoo.Presentation.Voting {
@@ -11,6 +15,8 @@ namespace HousingCoo.Presentation.Voting {
         public string UserName { get; set; }
         public string Info { get; set; }
         public ButtonModel Add { get; set; }
+
+
 
         public AddNewVotingViewState() {
             IconSource = "icon.png";
@@ -21,24 +27,54 @@ namespace HousingCoo.Presentation.Voting {
     }
 
     public class AddNewVotingController : BaseController, IAddNewActivityController {
-        public ICommand AddClickCommand { get; }
+        internal AddNewVotingPresenter Presenter;
+
+        public Command<NewActivitySnapshot> ShareActivity { get; }
+
         public AddNewVotingController() {
-            AddClickCommand = new Command(OnAdd);
+            ShareActivity = new Command<NewActivitySnapshot>(OnAdd);
         }
 
-        private void OnAdd(object obj) {
-
+        private void OnAdd(NewActivitySnapshot data) {
+            Presenter.AddNewVoting(data);
         }
     }
+
     public class AddNewVotingPresenter : BasePresenter<AddNewVotingViewState, AddNewVotingController>,
         IPageNavigatorSupporting {
+        readonly IXamLogger logger;
+        readonly IVotingAdditing repo;
+
         //
         public IPageNavigator PageNavigator { get; }
 
-        public AddNewVotingPresenter() {
-            PageNavigator = new PageNavigatorViewModel {
-                Title = "Add new voiting"
+        public AddNewVotingPresenter() : this(
+         Bootstrapper.Instance.Resolver.Get<IXamLogger>(),
+         Bootstrapper.Instance.Resolver.Get<IVotingAdditing>()) { }
+        public AddNewVotingPresenter(IXamLogger logger, IVotingAdditing repo) {
+            PageNavigator = new PageNavigatorAdapter  {
+                Title = "Add new voting"
             };
+            this.logger = logger;
+            this.repo = repo;
+        }
+
+        protected override void Init(AddNewVotingViewState vs, AddNewVotingController con) {
+            base.Init(vs, con);
+            con.Presenter = this;
+        }
+
+        internal void AddNewVoting(NewActivitySnapshot data) {
+            var state = ViewState;
+            repo.Add(new Domain.Model.VotingModel {
+                ActorName = state.UserName,
+                Body = data.Body,
+                Title = data.Title,
+                Verb = "",
+                DateClosed = data.FinishDate,
+                DateOpened = DateTime.Now
+            });
+            PageNavigator.Navigation.PopToRootAsync(true);
         }
     }
 

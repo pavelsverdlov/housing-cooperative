@@ -76,7 +76,7 @@ namespace HousingCoo.Presentation.Voting {
             this.sender = sender;
             PullToRefresh = new ListViewPullToRefreshViewModel();
             PullToRefresh.Refreshed += OnPullToRefreshed;
-            PageNavigator = new PageNavigatorViewModel { Title = "Detail" };
+            PageNavigator = new PageNavigatorAdapter  {  };
             HeaderViewModel = new ActivityHeaderPresenter<VotingController>();
             DetailViewModel = new ActivityDetailPresenter<VotingController>();
             DetailViewModel.Controller.Presenter = this;
@@ -115,6 +115,8 @@ namespace HousingCoo.Presentation.Voting {
                 Message = message
             });
             DetailViewModel.ViewState.Push((nameof(DetailViewModel.ViewState.Comments), prev));
+
+
         }
     }
 }

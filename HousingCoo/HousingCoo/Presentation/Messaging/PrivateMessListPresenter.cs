@@ -1,4 +1,8 @@
-﻿using System;
+﻿using HousingCoo.Domain.Interactors;
+using HousingCoo.Domain.Model;
+using HousingCoo.Presentation.Common;
+using System;
+using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Presentation;
 using Xamarin.Presentation.Controls;
@@ -23,31 +27,23 @@ namespace HousingCoo.Presentation.Messaging {
     }
     public class PrivateMessListViewState : CollectionViewState<PeopleViewState> {
         public PrivateMessListViewState() {
-            for (int i = 0; i < 10; ++i) {
-                ViewCollection.Add(new PeopleViewState { IconSource = "person.png", Name = "Some Friend " + i, Info = "Last message text ..." + i });
-            }
         }
     }
-    public class PrivateMessListPresenter : BasePresenter<PrivateMessListViewState, PrivateMessListController>,
-        IPageNavigatorSupporting {
-        readonly IXamLogger logger;
-        readonly ICommutator commutator;
+    public class PrivateMessListPresenter : HousingDefCollectionPresenter<PrivateMessListViewState, PrivateMessListController, PeopleViewState>,
+        IMessagingPeopleListConsumer {
+        readonly IMessagingPeopleListProducer producer;
 
-        public ListViewPullToRefreshViewModel PullToRefresh { get; }
-        public IPageNavigator PageNavigator { get; }
+        public PeopleModel Account { get; }
+        public PeopleModel MessageTo { get; private set; }
 
-        public PrivateMessListPresenter() : this(
-          Bootstrapper.Instance.Resolver.Get<IXamLogger>(),
-          Bootstrapper.Instance.Resolver.Get<ICommutator>()) { }
-        public PrivateMessListPresenter(IXamLogger logger, ICommutator commutator) {
-            PageNavigator = new PageNavigatorViewModel() {
-                IconSource = StaticResources.Icons.MessageWhite,
-                Title = "Private messages"
-            };
-            PullToRefresh = new ListViewPullToRefreshViewModel();
-            PullToRefresh.Refreshed += OnListRefreshed;
-            this.logger = logger;
-            this.commutator = commutator;
+        public PrivateMessListPresenter() : this(Bootstrapper.Instance.Resolver.Get<IMessagingPeopleListProducer>()) { }
+        public PrivateMessListPresenter(IMessagingPeopleListProducer producer) {
+            PageNavigator.IconSource = StaticResources.Icons.MessageWhite;
+            PageNavigator.Title = "Private messages";
+            Account = new PeopleModel();
+            MessageTo = new PeopleModel();
+            this.producer = producer;
+            producer.Receive(this);
         }
 
         protected override void Init(PrivateMessListViewState vs, PrivateMessListController con) {
@@ -55,8 +51,8 @@ namespace HousingCoo.Presentation.Messaging {
             con.Presenter = this;
         }
 
-        private void OnListRefreshed() {
-
+        protected override void OnListRefreshed() {
+            producer.Receive(this);
         }
 
         public async void ShowPrivateMessagingWith(PeopleViewState vs) {
@@ -66,6 +62,11 @@ namespace HousingCoo.Presentation.Messaging {
             } catch (Exception ex) {
                 logger.Error(ex);
             }
+        }
+
+        public void OnReceived(IEnumerable<PeopleModel> mess) {
+            mess.ForEach(x => ViewState.ViewCollection.Add(new PeopleViewState {
+                IconSource = "person.png", Name = x.Name, Info = "last message text" }));
         }
     }
 }

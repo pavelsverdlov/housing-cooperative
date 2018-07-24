@@ -11,7 +11,7 @@
     <ContentPage.Resources>
         <DataTemplate x:Key="PeopleView">
             <ViewCell>
-                <social:PeopleItemView  RemoveCommand="{Binding Source={x:Reference Name=page}, Path=BindingContext.Controller.RemovePerson}"/>
+                <social:PeopleItemView RemoveCommand="{Binding Source={x:Reference Name=page}, Path=BindingContext.Controller.RemovePerson}"/>
                 <!-- IsActionsVisibile="True"
                 
                 -->

@@ -19,11 +19,11 @@ namespace HousingCoo.Presentation.Voting {
         public Command<VotingHeaderPresenter> ItemSelectedCommand { get; }
         public ICommand AddNewVoting { get; }
 
-        public Command<ButtonModel> ClickCommand { get; }
+        public ICommand ClickCommand { get; }
 
         public VotingListPresenter Presenter;
         public VotingListController() {
-            ClickCommand = new Command<ButtonModel>(OnClick);
+            ClickCommand = new Command<VotingHeaderPresenter>(OnClick);
             ItemSelectedCommand = new Command<VotingHeaderPresenter>(OnItemSelected);
             AddNewVoting = new Command(OnAddNewVoting);
         }
@@ -36,8 +36,8 @@ namespace HousingCoo.Presentation.Voting {
             Presenter.OnVotingSelected(vm.ViewState, vm.Model);
         }
 
-        private void OnClick(ButtonModel obj) {
-
+        private void OnClick(VotingHeaderPresenter vm) {
+            Presenter.OnVotingSelected(vm.ViewState, vm.Model);
         }
     }
     public class VotingListViewState : CollectionViewState<VotingHeaderPresenter> {
@@ -76,6 +76,7 @@ namespace HousingCoo.Presentation.Voting {
             var list = new List<VotingHeaderPresenter>();
             foreach (var item in votings) {
                 var vm = new VotingHeaderPresenter(item);
+                vm.Controller.Presenter = this;
                 vm.ViewState.Push(
                     (nameof(ActivityViewState.Title), item.Title),
                     (nameof(ActivityViewState.ActorName), item.ActorName),

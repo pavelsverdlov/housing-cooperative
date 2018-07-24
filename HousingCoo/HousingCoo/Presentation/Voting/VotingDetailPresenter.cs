@@ -17,14 +17,14 @@ namespace HousingCoo.Presentation.Voting {
     public class VotingController : BaseController, IActivityDetailController, IActivityHeaderController {
         public VotingDetailPresenter Presenter;
 
-        public Command<ButtonModel> ClickCommand { get; }
+        public ICommand ClickCommand { get; }
         public Command<CommentViewState> ItemSelectedCommand { get; }
         public Command<Entry> CommentAdded { get; }
         public Command CameraActivated { get; }
         public Command AttachFileActivated { get; }
 
         public VotingController() {
-            ClickCommand = new Command<ButtonModel>(OnClickCommand);
+            ClickCommand = new Command<object>(OnClickCommand);
             ItemSelectedCommand = new Command<CommentViewState>(OnItemSelected);
             CommentAdded = new Command<Entry>(OnCommentAdded);
             CameraActivated = new Command(OnCameraActivated);
@@ -48,7 +48,7 @@ namespace HousingCoo.Presentation.Voting {
 
         }
 
-        void OnClickCommand(ButtonModel obj) {
+        void OnClickCommand(object obj) {
 
         }
     }
@@ -68,12 +68,15 @@ namespace HousingCoo.Presentation.Voting {
         public VotingModel Model { get; private set; }
 
         readonly IVotingCommentsProducer sender;
+        readonly IVotingCommentAdd commentsRepo;
 
         public VotingDetailPresenter() : this(
-            Bootstrapper.Instance.Resolver.Get<IVotingCommentsProducer>()) { }
+            Bootstrapper.Instance.Resolver.Get<IVotingCommentsProducer>(),
+            Bootstrapper.Instance.Resolver.Get<IVotingCommentAdd>()) { }
 
-        public VotingDetailPresenter(IVotingCommentsProducer sender) {
+        public VotingDetailPresenter(IVotingCommentsProducer sender, IVotingCommentAdd commentsRepo) {
             this.sender = sender;
+            this.commentsRepo = commentsRepo;
             PullToRefresh = new ListViewPullToRefreshViewModel();
             PullToRefresh.Refreshed += OnPullToRefreshed;
             PageNavigator = new PageNavigatorAdapter  {  };
@@ -108,15 +111,21 @@ namespace HousingCoo.Presentation.Voting {
         }
 
         internal void AddNewComment(string message) {
-            var prev = DetailViewModel.ViewState.Comments;
-            prev.Add(new CommentViewState {
-                IconSource = "person.png",
-                Title = "Test additing message",
-                Message = message
+            var actor = "Test additing message";
+            //var prev = DetailViewModel.ViewState.Comments;
+            //prev.Add(new CommentViewState {
+            //    IconSource = "person.png",
+            //    Title = actor,
+            //    Message = message
+            //});
+            //DetailViewModel.ViewState.Push((nameof(DetailViewModel.ViewState.Comments), prev));
+
+            commentsRepo.Add(Model, new CommentVotingModel {
+                Message = message,
+                Actor = actor
             });
-            DetailViewModel.ViewState.Push((nameof(DetailViewModel.ViewState.Comments), prev));
 
-
+            sender.ReceiveComments(this);
         }
     }
 }

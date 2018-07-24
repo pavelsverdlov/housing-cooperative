@@ -10,47 +10,56 @@ using Xamarin.Presentation.Infrastructure;
 using Xamarin.Presentation.Social.States;
 
 namespace HousingCoo.Presentation.People {
-    public class PeopleListController : BaseController, IItemSelectedController<PeopleViewState> {
+    public class PeopleListController : BaseController, IItemSelectedController<PeopleVS> {
         internal PeopleListPagePresenter Presenter;
-        public Command<PeopleViewState> ItemSelectedCommand { get; }
+        public Command<PeopleVS> ItemSelectedCommand { get; }
 
         public Command AddNewPerson { get; }
-        public Command<PeopleViewState> RemovePerson { get; }
+        public Command<PeopleVS> RemovePerson { get; }
 
 
         public PeopleListController() {
-            ItemSelectedCommand = new Command<PeopleViewState>(OnItemSelected);
+            ItemSelectedCommand = new Command<PeopleVS>(OnItemSelected);
             AddNewPerson = new Command(OnAddNewPerson);
-            RemovePerson = new Command<PeopleViewState>(OnRemovePerson);
+            RemovePerson = new Command<PeopleVS>(OnRemovePerson);
         }
 
-        void OnRemovePerson(PeopleViewState obj) {
-            
+        void OnRemovePerson(PeopleVS vs) {
+            Presenter.Remove(vs);
         }
 
         private void OnAddNewPerson(object obj) {
             Presenter.OpenEditProfile();
         }
 
-        private void OnItemSelected(PeopleViewState vs) {
+        private void OnItemSelected(PeopleVS vs) {
             Presenter.ShowPeoplePreview(vs);
         }
     }
-    public class PeopleListViewState : CollectionViewState<PeopleViewState> {
+    public class PeopleListViewState : CollectionViewState<PeopleVS> {
         public PeopleListViewState() {
            
         }
     }
-    public class PeopleListPagePresenter : HousingDefCollectionPresenter<PeopleListViewState, PeopleListController, PeopleViewState>,
+
+    public class PeopleVS : PeopleViewState {
+        public PeopleModel Model { get; set; }
+    }
+
+    public class PeopleListPagePresenter : HousingDefCollectionPresenter<PeopleListViewState, PeopleListController, PeopleVS>,
         IPeopleListConsumer {
         readonly IPeopleListProducer producer;
+        readonly IPeopleRemove repo;
 
-        public PeopleListPagePresenter() : this(Bootstrapper.Instance.Resolver.Get<IPeopleListProducer>()) { }
-        public PeopleListPagePresenter(IPeopleListProducer producer) {
+        public PeopleListPagePresenter() : this(
+            Bootstrapper.Instance.Resolver.Get<IPeopleListProducer>(),
+            Bootstrapper.Instance.Resolver.Get<IPeopleRemove>()) { }
+        public PeopleListPagePresenter(IPeopleListProducer producer, IPeopleRemove repo) {
             PageNavigator.Title = "People";
             PageNavigator.IconSource = StaticResources.Icons.PeopleWhite;
             producer.Receive(this);
             this.producer = producer;
+            this.repo = repo;
         }
      
         protected override void Init(PeopleListViewState vs, PeopleListController con) {
@@ -70,7 +79,7 @@ namespace HousingCoo.Presentation.People {
             }
         }
 
-        internal async void ShowPeoplePreview(PeopleViewState vs) {
+        internal async void ShowPeoplePreview(PeopleVS vs) {
             try {
                 PreviewPeoplePresenter pres = await commutator.GoToPage<PreviewPeoplePresenter>(PageNavigator.Navigation);
                 pres.ShowPeople(vs);
@@ -81,8 +90,16 @@ namespace HousingCoo.Presentation.People {
 
 
         public void OnReceived(IEnumerable<PeopleModel> people) {
-            people.ForEach(x => ViewState.ViewCollection.Add(new PeopleViewState { IconSource = "person.png", Name = x.Name, Info = "some info" }));
+            people.ForEach(x => ViewState.ViewCollection.Add(
+                new PeopleVS {
+                    Model = x,
+                    IconSource = "person.png",
+                    Name = x.Name,
+                    Info = "some info" }));
         }
 
+        internal void Remove(PeopleVS vs) {
+            repo.Remove(vs.Model);
+        }
     }
 }

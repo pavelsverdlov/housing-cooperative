@@ -79,7 +79,13 @@ namespace HousingCoo.Data {
             
         }
 
-        public void AddCommentToVoting(int votingId, CommentVotingEntity en) {
+        public void AddCommentToVoting(long votingId, CommentVotingEntity en) {
+            var comm = Storage.Instance.Comments[votingId];
+            long max = 0;
+            if (comm.Any()) { 
+                max = comm.Max(x => x.Id);
+            }
+            en.Id = ++max;
             Storage.Instance.Comments[votingId].Add(en);
         }
     }

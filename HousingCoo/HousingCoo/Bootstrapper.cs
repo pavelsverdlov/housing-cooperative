@@ -47,7 +47,8 @@ namespace HousingCoo {
             Register<IVotingListProducer, VotingListInteractor>();
             Register<IVotingCommentsProducer, VotingListInteractor>();
             Register<INotificationProducer, VotingListInteractor>();
-            Register<IVotingAdditing, VotingListInteractor>();
+            Register<IVotingAdditing, VotingListInteractor>(); 
+            Register<IVotingCommentAdd, VotingListInteractor>();
 
             Register<IPeopleListProducer, VotingListInteractor>();
             Register<IMessagingPeopleListProducer, VotingListInteractor>();

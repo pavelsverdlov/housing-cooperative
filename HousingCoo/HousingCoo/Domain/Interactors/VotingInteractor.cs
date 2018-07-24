@@ -150,9 +150,10 @@ namespace HousingCoo.Domain.Interactors {
             v.Id = id;
             VotingEntity entity = v.Map<VotingEntity>();
             HousingCoo.Data.Services.Storage.Instance.Votings.Add(id, entity);
+            HousingCoo.Data.Services.Storage.Instance.Comments.Add(id, new List<CommentVotingEntity>());
         }
         public void Add(VotingModel voting, CommentVotingModel v) {
-            gateway.AddCommentToVoting(0, v.Map<CommentVotingEntity>());
+            gateway.AddCommentToVoting(voting.Id, v.Map<CommentVotingEntity>());
         }
 
         #region People
@@ -198,7 +199,7 @@ namespace HousingCoo.Domain.Interactors {
         PeopleEntity AddPerson(int companyId, PeopleEntity entity);
         void RemovePerson(int coumanyId, long id);
 
-        void AddCommentToVoting(int votingId, CommentVotingEntity en);
+        void AddCommentToVoting(long votingId, CommentVotingEntity en);
 
     }
 

@@ -47,7 +47,7 @@
     <EmbeddedResource Update="Presentation\Voting\AddNewVotingPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Presentation\Voting\VoitingListPage.xaml">
+    <EmbeddedResource Update="Presentation\Voting\VoitingListView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Presentation\Voting\VotingDetailPage.xaml">
@@ -60,6 +60,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\xamarin-presentation\Xamarin.Presentation\Xamarin.Presentation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Presentation\Voting\VoitingListView.xaml.cs">
+      <DependentUpon>VoitingListView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

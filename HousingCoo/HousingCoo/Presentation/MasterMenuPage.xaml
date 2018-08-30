@@ -11,19 +11,24 @@
              xmlns:presen="clr-namespace:HousingCoo.Presentation" Title="MasterDetailPage"
             x:Name="page">
     <MasterDetailPage.Resources>
-        <!--<ControlTemplate x:Key="ct1">
-            <voting:VotingListView />
+        <ControlTemplate x:Key="ct0">
+            <voting:VoitingListView />
+        </ControlTemplate>
+        <ControlTemplate x:Key="ct1">
+            <people:PeopleListView x:Name="peopleview"/>
         </ControlTemplate>
         <ControlTemplate x:Key="ct2">
-            <Label Text="niddle"/>
+            <mess:PrivateMessageListView x:Name="prmessageview"/>
         </ControlTemplate>
         <ControlTemplate x:Key="ct3">
-            <Label Text="right"/>
+            <not:NotificationListView />
         </ControlTemplate>
-        <tab:TestSelector x:Key="selector"
-            Template0="{StaticResource ct1}"
-            Template1="{StaticResource ct2}"
-            Template2="{StaticResource ct3}"/>-->
+        <tab:TabControlTemplateSelector x:Key="selector"
+            Template0="{StaticResource ct0}"
+            Template1="{StaticResource ct1}"
+            Template2="{StaticResource ct2}"
+            Template3="{StaticResource ct3}"/>
+        
     </MasterDetailPage.Resources>
     <!--Use MasterDetailPage > NavigationPage OR TabbedPage > NavigationPage BUT NOT MasterDetailPage > TabbedPage.-->
     <MasterDetailPage.BindingContext>
@@ -35,18 +40,26 @@
     </MasterDetailPage.Master>
 
     <MasterDetailPage.Detail>
+        <NavigationPage Title="NavigationPage">
+            <x:Arguments>
+                <tab:TabPage TabControlSelector="{StaticResource selector}" BindingContext="{Binding TabPages}"/>
+            </x:Arguments>
+        </NavigationPage>
+    </MasterDetailPage.Detail>
+
+    <!--<MasterDetailPage.Detail>
 
         <NavigationPage>
             <x:Arguments>
-                <!--<tab:TabPage TabControlSelector="{StaticResource selector}" BindingContext="{Binding TabPages}"/>-->
+                --><!--<tab:TabPage TabControlSelector="{StaticResource selector}" BindingContext="{Binding TabPages}"/>--><!--
                 <voting:VoitingListPage/>
             </x:Arguments>
         </NavigationPage>
 
-    </MasterDetailPage.Detail>
+    </MasterDetailPage.Detail>-->
 
     <MasterDetailPage.Behaviors>
-        <pages:MasterDetailPageNavigatorBehavior Page="{Binding Source={x:Reference Name=page}, Path=BindingContext.Page}" />
+        <pages:MasterDetailPageNavigatorBehavior Page="{Binding Source={x:Reference Name=page}, Path=BindingContext.PageNavigator}" />
     </MasterDetailPage.Behaviors>
 
 </MasterDetailPage>

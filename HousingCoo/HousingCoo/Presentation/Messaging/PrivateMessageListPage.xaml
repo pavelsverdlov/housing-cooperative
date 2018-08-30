@@ -1,34 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:HousingCoo.Presentation.Messaging"
              xmlns:pages="clr-namespace:Xamarin.Presentation.Pages;assembly=Xamarin.Presentation"
              xmlns:social="clr-namespace:Xamarin.Presentation.Social;assembly=Xamarin.Presentation"
              xmlns:lv="clr-namespace:Xamarin.Presentation.Controls.LV;assembly=Xamarin.Presentation"
-             x:Name="page"
-             x:Class="HousingCoo.Presentation.Messaging.PrivateMessageListPage">
-    <ContentPage.Resources>
+             x:Name="view"
+             x:Class="HousingCoo.Presentation.Messaging.PrivateMessageListView">
+    <ContentView.Resources>
         <DataTemplate x:Key="MessageView">
             <ViewCell>
                 <social:PeopleItemView IsActionsVisible="False" />
             </ViewCell>
         </DataTemplate>
-    </ContentPage.Resources>
-    <ContentPage.BindingContext>
+    </ContentView.Resources>
+    <ContentView.BindingContext>
         <local:PrivateMessListPresenter/>
-    </ContentPage.BindingContext>
-    <ContentPage.ToolbarItems>
+    </ContentView.BindingContext>
+    
+    <!--<ContentView.ToolbarItems>
         <ToolbarItem Icon="ic_message_white_24dp.png" Command="{Binding Source={x:Reference Name=page}, Path=BindingContext.Controller.SendMessage}" />
-    </ContentPage.ToolbarItems>
-    <ContentPage.Behaviors>
+    </ContentView.ToolbarItems>
+    <ContentView.Behaviors>
         <pages:PageNavigatorBehavior Page="{Binding Source={x:Reference Name=page}, Path=BindingContext.PageNavigator}" />
-    </ContentPage.Behaviors>
-    <ContentPage.Content>
+    </ContentView.Behaviors>-->
+    
+    <ContentView.Content>
         <lv:ExtendedListView 
                              ItemTemplate="{StaticResource MessageView}"
                              ItemSelectedCommand="{Binding Controller.ItemSelectedCommand}"
                              PullToRefresh="{Binding PullToRefresh}"
                              BindingContext="{Binding}" 
                              />
-    </ContentPage.Content>
-</ContentPage>
+    </ContentView.Content>
+</ContentView>

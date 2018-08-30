@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Name="page"
              xmlns:pages="clr-namespace:Xamarin.Presentation.Pages;assembly=Xamarin.Presentation"
@@ -7,26 +7,29 @@
              xmlns:local="clr-namespace:HousingCoo.Presentation.Notification"
              xmlns:lv="clr-namespace:Xamarin.Presentation.Controls.LV;assembly=Xamarin.Presentation"
              xmlns:crl="clr-namespace:Xamarin.Presentation.Controls;assembly=Xamarin.Presentation"
-             x:Class="HousingCoo.Presentation.Notification.NotificationListPage">
-    <ContentPage.Resources>
+             x:Class="HousingCoo.Presentation.Notification.NotificationListView">
+    <ContentView.Resources>
         <DataTemplate x:Key="NotificationView">
             <ViewCell>
                 <social:NotificationView />
             </ViewCell>
         </DataTemplate>
-    </ContentPage.Resources>
-    <ContentPage.BindingContext>
+    </ContentView.Resources>
+    
+    <ContentView.BindingContext>
         <local:NotificationLisPresenter/>
-    </ContentPage.BindingContext>
-    <ContentPage.Behaviors>
+    </ContentView.BindingContext>
+    
+    <!--<ContentView.Behaviors>
         <pages:PageNavigatorBehavior Page="{Binding  Source={x:Reference Name=page}, Path=BindingContext.PageNavigator}" />
-    </ContentPage.Behaviors>
-    <ContentPage.Content>
+    </ContentView.Behaviors>-->
+    
+    <ContentView.Content>
         <lv:ExtendedListView 
                              ItemTemplate="{StaticResource NotificationView}"
                              ItemSelectedCommand="{Binding Controller.ItemSelectedCommand}"
                              PullToRefresh="{Binding PullToRefresh}"
                              BindingContext="{Binding}" 
                              />
-    </ContentPage.Content>
-</ContentPage>
+    </ContentView.Content>
+</ContentView>

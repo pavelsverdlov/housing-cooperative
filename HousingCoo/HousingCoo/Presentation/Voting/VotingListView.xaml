@@ -27,6 +27,9 @@
                              ItemSelectedCommand="{Binding Controller.ItemSelectedCommand}"
                              PullToRefresh="{Binding PullToRefresh}"
                              BindingContext="{Binding}" 
-                             />
+                             >
+            
+
+        </lv:ExtendedListView>
     </ContentView.Content>
 </ContentView>

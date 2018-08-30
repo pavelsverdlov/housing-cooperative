@@ -1,35 +1,40 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pages="clr-namespace:Xamarin.Presentation.Pages;assembly=Xamarin.Presentation"
              xmlns:social="clr-namespace:Xamarin.Presentation.Social;assembly=Xamarin.Presentation"
              xmlns:local="clr-namespace:HousingCoo.Presentation.Voting"
              xmlns:crl="clr-namespace:Xamarin.Presentation.Controls;assembly=Xamarin.Presentation"
              xmlns:lv="clr-namespace:Xamarin.Presentation.Controls.LV;assembly=Xamarin.Presentation"
-             x:Name="page"
-             x:Class="HousingCoo.Presentation.Voting.VoitingListPage">
-    <ContentPage.Resources>
+             
+             x:Class="HousingCoo.Presentation.Voting.VoitingListView">
+
+    <ContentView.BindingContext>
+        <local:VotingListPresenter/>
+    </ContentView.BindingContext>
+
+    <ContentView.Resources>
         <DataTemplate x:Key="VotingView">
             <ViewCell>
-                <social:ActivityView />
+                <social:ActivityView BindingContext="{Binding}"/>
             </ViewCell>
         </DataTemplate>
-    </ContentPage.Resources>
-    <ContentPage.BindingContext>
-        <local:VotingListPresenter/>
-    </ContentPage.BindingContext>
-    <ContentPage.Behaviors>
+    </ContentView.Resources>
+    
+    
+    
+    <!--<ContentView.Behaviors>
         <pages:PageNavigatorBehavior Page="{Binding Source={x:Reference Name=page}, Path=BindingContext.PageNavigator}" />
-    </ContentPage.Behaviors>
+    </ContentView.Behaviors>-->
     <!--<ContentPage.ToolbarItems>
         <ToolbarItem Icon="baseline_create_white_24dp.png" Command="{Binding Source={x:Reference Name=page}, Path=BindingContext.Controller.AddNewVoting}" />
     </ContentPage.ToolbarItems>-->
-    <ContentPage.Content>
+    <ContentView.Content>
         <lv:ExtendedListView 
                              ItemTemplate="{StaticResource VotingView}"
                              ItemSelectedCommand="{Binding Controller.ItemSelectedCommand}"
                              PullToRefresh="{Binding PullToRefresh}"
                              BindingContext="{Binding}" 
                              />
-    </ContentPage.Content>
-</ContentPage>
+    </ContentView.Content>
+</ContentView>

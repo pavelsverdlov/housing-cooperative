@@ -64,7 +64,7 @@ namespace HousingCoo {
     public class HostingVMContainer : ViewModelContainer {
         protected override void Registration() {
             Map<VotingDetailPage, VotingDetailPresenter>();
-            Map<VoitingListPage, VotingListPresenter>();
+            //Map<VoitingListView, VotingListPresenter>();
             Map<AddNewVotingPage, AddNewVotingPresenter>();
             Map<PrivateMessagingPage, PrivateMessagingPresenter>();
             Map<PreviewPeoplePage, PreviewPeoplePresenter>();

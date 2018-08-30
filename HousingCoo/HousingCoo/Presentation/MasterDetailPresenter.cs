@@ -32,34 +32,56 @@ namespace HousingCoo.Presentation {
     }
 
     public class TabPageSwither : Xamarin.Presentation.Framework.BaseNotify, ITabPresenter, ITabController {
-        class TabPage : ITabPage {
-            public int Index { get; set; }
+        class TabPage : TabPageItem {
+            public TabPage(IPageNavigator pageNavigator) : base(pageNavigator) {
+            }
         }
 
-        public ITabPage Content { get { return current; } }
+        public ITabPage Content { get; private set; }
         public Command<string> TabSelected { get; }
+        public IPageNavigator PageNavigator { get; }
 
-        TabPage current;
-        readonly IMasterDetailPageNavigator page;
-
-        public TabPageSwither(IMasterDetailPageNavigator page) {
+        public TabPageSwither(IPageNavigator pageNavigator) {
+            PageNavigator = pageNavigator;
             TabSelected = new Command<string>(OnTabSelected);
-            this.page = page;
-            OnTabSelected("0");
         }
 
         void OnTabSelected(string tab) {
-            current = new TabPage { Index = int.Parse(tab) };
-
-            switch (current.Index) {
+            switch (int.Parse(tab)) {
                 case 0:
-                    page.Title = "Voting";
+                    OpenVotingPage();
                     break;
                 case 1:
-                    page.Title = "People";
+                    OpenPeoplePage();
+                    break;
+                case 2:
+                    OpenPrivateMessagesPage();
+                    break;
+                case 3:
+                    OpenNotificationPage();
                     break;
             }
+            SetPropertyChanged(nameof(Content));
+        }
 
+        internal void OpenVotingPage() {
+            PageNavigator.Title = "Voting";
+            Content = new TabPage(PageNavigator) { Index = 0 };
+            SetPropertyChanged(nameof(Content));
+        }
+        internal void OpenPeoplePage() {
+            PageNavigator.Title = "People";
+            Content = new TabPage(PageNavigator) { Index = 1 };
+            SetPropertyChanged(nameof(Content));
+        }
+        internal void OpenPrivateMessagesPage() {
+            PageNavigator.Title = "Private messages";
+            Content = new TabPage(PageNavigator) { Index = 2 };
+            SetPropertyChanged(nameof(Content));
+        }
+        internal void OpenNotificationPage() {
+            PageNavigator.Title = "Notification";
+            Content = new TabPage(PageNavigator) { Index = 3 };
             SetPropertyChanged(nameof(Content));
         }
     }
@@ -69,7 +91,7 @@ namespace HousingCoo.Presentation {
         readonly IXamLogger logger;
         readonly ICommutator commutator;
 
-        public TabPageSwither TabPages { get;}
+        public TabPageSwither TabPages { get; }
 
         public MasterDetailPresenter() : this(
           Bootstrapper.Instance.Resolver.Get<IXamLogger>(),
@@ -78,35 +100,32 @@ namespace HousingCoo.Presentation {
             this.logger = logger;
             this.commutator = commutator;
         //    Page.IsPresented = false;
-            Page.Title = "Housing Cooperative";
-            TabPages = new TabPageSwither(Page);
+            PageNavigator.Title = "Housing Cooperative";
+            TabPages = new TabPageSwither(PageNavigator);
+            TabPages.OpenVotingPage();
         }
-
-       
 
         protected override void Init(MasterDetailViewState vs, MasterDetailController con) {
             base.Init(vs, con);
             var i = 0;
-            var items = new List<NavPageMenuItem>(new[] {
-                    new NavPageMenuItem { Id = ++i, Title = "Votings" ,TargetType = typeof(Voting.VoitingListPage),
-                        Image = "baseline_how_to_vote_black_24dp.png"},
-                    new NavPageMenuItem { Id = i,   Title = "People" ,TargetType = typeof(People.PeopleListPage),
-                        Image = "ic_people_black_18dp.png" },
-                    new NavPageMenuItem { Id = ++i, Title = "Messages" ,TargetType = typeof(Messaging.PrivateMessageListPage),
-                        Image = StaticResources.Icons.MessageBlack},
-                    new NavPageMenuItem { Id = ++i, Title = "Notifications" ,TargetType = typeof(Notification.NotificationListPage),
-                        Image ="baseline_notifications_black_24dp.png"},
-                    //new NavPageMenuItem { Id = ++i, Title = "Cashbox" ,TargetType = typeof(Profile.EditProfilePage) },
-                    //new NavPageMenuItem { Id = 0, Title = "Personal Information", TargetType = typeof(Profile.EditProfilePage) }
-                });
+            //var items = new List<NavPageMenuItem>(new[] {
+            //        new NavPageMenuItem { Id = i,   Title = "People" ,TargetType = typeof(People.PeopleListPage),
+            //            Image = "ic_people_black_18dp.png" },
+            //        new NavPageMenuItem { Id = ++i, Title = "Messages" ,TargetType = typeof(Messaging.PrivateMessageListPage),
+            //            Image = StaticResources.Icons.MessageBlack},
+            //        new NavPageMenuItem { Id = ++i, Title = "Notifications" ,TargetType = typeof(Notification.NotificationListPage),
+            //            Image ="baseline_notifications_black_24dp.png"},
+            //        //new NavPageMenuItem { Id = ++i, Title = "Cashbox" ,TargetType = typeof(Profile.EditProfilePage) },
+            //        //new NavPageMenuItem { Id = 0, Title = "Personal Information", TargetType = typeof(Profile.EditProfilePage) }
+            //    });
 
-            vs.Push((nameof(MasterDetailViewState.MenuItems), items));
+           // items.ForEach(x=> ViewState.MenuItems.Add(x));
             con.Presenter = this;
         }
 
         internal async void EditProfile() {
             try {
-                await commutator.GoToPage<EditProfilePresenter>(Page.Navigation);
+                await commutator.GoToPage<EditProfilePresenter>(PageNavigator.Navigation);
                 ((MasterMenuPage)Application.Current.MainPage).IsPresented = false;
             } catch (Exception ex) {
                 logger.Error(ex);
@@ -117,16 +136,16 @@ namespace HousingCoo.Presentation {
             try {
                 //DispatcherEx.BeginRise(() => {
                 
-                var view = await Task.Run(() => commutator.GotView(item.TargetType));
+                var view = await Task.Run(() => commutator.GetView(item.TargetType));
 
                 var nav = new NavigationPage(view);
-                Page.UpdateDetail(nav);
+                PageNavigator.UpdateDetail(nav);
                 var pres = view.BindingContext as IPageNavigatorSupporting;
                 pres?.PageNavigator.UpdateNavigation(nav);
 
                 await Task.Delay(30);
 
-                Page.IsPresented = false;
+                PageNavigator.IsPresented = false;
 
                 //((MasterMenuPage)Application.Current.MainPage).IsPresented = false;
             } catch (Exception ex) {

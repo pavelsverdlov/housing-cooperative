@@ -45,7 +45,7 @@ namespace HousingCoo.Presentation.Messaging {
             this.producer = producer;
             producer.Receive(this);
         }
-
+        // <ToolbarItem Icon="ic_message_white_24dp.png" Command="{Binding Source={x:Reference Name=page}, Path=BindingContext.Controller.SendMessage}" />
         protected override void Init(PrivateMessListViewState vs, PrivateMessListController con) {
             base.Init(vs, con);
             con.Presenter = this;

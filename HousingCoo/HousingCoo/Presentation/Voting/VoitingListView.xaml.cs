@@ -2,10 +2,10 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace HousingCoo.Presentation.Messaging {
+namespace HousingCoo.Presentation.Voting {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class PrivateMessageListView : ContentView {
-        public PrivateMessageListView() {
+    public partial class VoitingListView : ContentView {
+        public VoitingListView() {
             InitializeComponent();
         }
     }

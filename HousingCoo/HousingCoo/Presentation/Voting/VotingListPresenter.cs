@@ -11,6 +11,7 @@ using Xamarin.Presentation.Framework.VSVVM;
 using Xamarin.Presentation.Infrastructure;
 using Xamarin.Presentation.Navigation;
 using Xamarin.Presentation.Pages;
+using Xamarin.Presentation.Pages.Tab;
 using Xamarin.Presentation.Social;
 using Xamarin.Presentation.Social.States;
 
@@ -52,7 +53,7 @@ namespace HousingCoo.Presentation.Voting {
     }
 
     public class VotingListPresenter : HousingDefCollectionPresenter<VotingListViewState, VotingListController, VotingHeaderPresenter>,
-        IVotingListConsumer, IPageNavigatorSupporting {
+        IVotingListConsumer, IPageNavigatorSupporting, ITabPageNavigatorUpdating {
 
         readonly IVotingListProducer sender;
 
@@ -63,12 +64,12 @@ namespace HousingCoo.Presentation.Voting {
         public VotingListPresenter(IVotingListProducer sender) {
             this.sender = sender;
             PageNavigator.Title = "Voiting";
-            PageNavigator.ToolbarMenu = new List<ToolbarItem> {
+            PageNavigator.ToolbarMenu.Add(
                 new ToolbarItem(){
                     Icon = "baseline_create_white_24dp.png",
                     Command = Controller.AddNewVoting
                 }
-            };
+            );
             Controller.Presenter = this;
             sender.ReceiveNextPage(this);
         }

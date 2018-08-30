@@ -61,7 +61,7 @@ namespace HousingCoo.Presentation.People {
             this.producer = producer;
             this.repo = repo;
         }
-     
+        //<ToolbarItem Icon="baseline_person_add_white_24dp.png" Command="{Binding Source={x:Reference Name=page}, Path=BindingContext.Controller.AddNewPerson}" />
         protected override void Init(PeopleListViewState vs, PeopleListController con) {
             base.Init(vs, con);
             con.Presenter = this;

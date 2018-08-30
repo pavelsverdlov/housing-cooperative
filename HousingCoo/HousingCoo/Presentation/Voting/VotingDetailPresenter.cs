@@ -21,17 +21,17 @@ namespace HousingCoo.Presentation.Voting {
         public Command<CommentViewState> ItemSelectedCommand { get; }
         public Command<Entry> CommentAdded { get; }
         public Command CameraActivated { get; }
-        public Command AttachFileActivated { get; }
+        public ICommand ItemAppeared { get; }
 
         public VotingController() {
             ClickCommand = new Command<object>(OnClickCommand);
             ItemSelectedCommand = new Command<CommentViewState>(OnItemSelected);
             CommentAdded = new Command<Entry>(OnCommentAdded);
             CameraActivated = new Command(OnCameraActivated);
-            AttachFileActivated = new Command(OnAttachFileActivated);
+            ItemAppeared = new Command(OnItemAppeared);
         }
 
-        void OnAttachFileActivated(object obj) {
+        void OnItemAppeared(object obj) {
 
         }
 

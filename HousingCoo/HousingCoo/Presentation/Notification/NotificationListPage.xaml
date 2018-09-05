@@ -17,7 +17,7 @@
     </ContentView.Resources>
     
     <ContentView.BindingContext>
-        <local:NotificationLisPresenter/>
+      <local:NotificationListPresenter/>
     </ContentView.BindingContext>
     
     <!--<ContentView.Behaviors>

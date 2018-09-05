@@ -7,6 +7,7 @@ using Xamarin.Forms;
 using Xamarin.Presentation;
 using Xamarin.Presentation.Framework.VSVVM;
 using Xamarin.Presentation.Infrastructure;
+using Xamarin.Presentation.Pages.Tab;
 using Xamarin.Presentation.Social.States;
 
 namespace HousingCoo.Presentation.People {
@@ -47,7 +48,7 @@ namespace HousingCoo.Presentation.People {
     }
 
     public class PeopleListPagePresenter : HousingDefCollectionPresenter<PeopleListViewState, PeopleListController, PeopleVS>,
-        IPeopleListConsumer {
+        IPeopleListConsumer, ITabPageNavigatorUpdating {
         readonly IPeopleListProducer producer;
         readonly IPeopleRemove repo;
 
@@ -57,6 +58,7 @@ namespace HousingCoo.Presentation.People {
         public PeopleListPagePresenter(IPeopleListProducer producer, IPeopleRemove repo) {
             PageNavigator.Title = "People";
             PageNavigator.IconSource = StaticResources.Icons.PeopleWhite;
+
             producer.Receive(this);
             this.producer = producer;
             this.repo = repo;
@@ -100,6 +102,16 @@ namespace HousingCoo.Presentation.People {
 
         internal void Remove(PeopleVS vs) {
             repo.Remove(vs.Model);
+        }
+
+        public void NavigatorPageChanged() {
+            DispatcherEx.BeginRise(() => {
+                PageNavigator.ToolbarMenu.Clear();
+                PageNavigator.ToolbarMenu.Add(new ToolbarItem() {
+                  Icon = "baseline_person_add_white_24dp.png",
+                  Command = Controller.AddNewPerson
+                });
+            });
         }
     }
 }

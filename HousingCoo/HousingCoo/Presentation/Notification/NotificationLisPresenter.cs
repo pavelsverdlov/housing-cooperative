@@ -8,6 +8,7 @@ using Xamarin.Presentation.Controls;
 using Xamarin.Presentation.Framework.VSVVM;
 using Xamarin.Presentation.Infrastructure;
 using Xamarin.Presentation.Pages;
+using Xamarin.Presentation.Pages.Tab;
 using Xamarin.Presentation.Social.States;
 
 namespace HousingCoo.Presentation.Notification {
@@ -25,25 +26,25 @@ namespace HousingCoo.Presentation.Notification {
         public NotificationListViewState() {
         }
     }
-    public class NotificationLisPresenter : BasePresenter<NotificationListViewState, NotificationListController>,
-        INotificationConsumer, IPageNavigatorSupporting {
+    public class NotificationListPresenter : BasePresenter<NotificationListViewState, NotificationListController>,
+        INotificationConsumer, IPageNavigatorSupporting, ITabPageNavigatorUpdating {
         readonly IXamLogger logger;
         readonly INotificationProducer producer;
 
         public ListViewPullToRefreshViewModel PullToRefresh { get; }
-        public IPageNavigator PageNavigator { get; }
+        public IPageNavigator PageNavigator { get; set; }
 
         public AccountModel Account { get; }
 
 
-        public NotificationLisPresenter() : this(
+        public NotificationListPresenter() : this(
            Bootstrapper.Instance.Resolver.Get<IXamLogger>(),
            Bootstrapper.Instance.Resolver.Get<INotificationProducer>()) { }
-        public NotificationLisPresenter(IXamLogger logger, INotificationProducer producer) {
-            PageNavigator = new PageNavigatorAdapter () {
-                IconSource = StaticResources.Icons.StarGold,
-                Title = "Notifications"
-            };
+        public NotificationListPresenter(IXamLogger logger, INotificationProducer producer) {
+            //PageNavigator = new PageNavigatorAdapter() {
+            //    IconSource = StaticResources.Icons.StarGold,
+            //    Title = "Notifications"
+            //};
             PullToRefresh = new ListViewPullToRefreshViewModel();
             PullToRefresh.Refreshed += OnListRefreshed;
 
@@ -59,6 +60,8 @@ namespace HousingCoo.Presentation.Notification {
 
         }
         int index = 0;
+      
+
         public void OnNotificationsReceived(IEnumerable<NotificationModel> comments) {
             //this.Page.Navigation.se
             PageNavigator.IconSource = StaticResources.Icons.StarWhite;
@@ -68,6 +71,13 @@ namespace HousingCoo.Presentation.Notification {
                 Title = index % 2 == 0 ? x.Title : "Today new Person joined"
             }));
             index++;
+        }
+
+        public void NavigatorPageChanged()
+        {
+            DispatcherEx.BeginRise(() => {
+                PageNavigator.ToolbarMenu.Clear();
+            });
         }
     }
 }

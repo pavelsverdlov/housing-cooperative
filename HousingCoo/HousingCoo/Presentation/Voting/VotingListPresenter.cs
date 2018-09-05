@@ -64,12 +64,7 @@ namespace HousingCoo.Presentation.Voting {
         public VotingListPresenter(IVotingListProducer sender) {
             this.sender = sender;
             PageNavigator.Title = "Voiting";
-            PageNavigator.ToolbarMenu.Add(
-                new ToolbarItem(){
-                    Icon = "baseline_create_white_24dp.png",
-                    Command = Controller.AddNewVoting
-                }
-            );
+           
             Controller.Presenter = this;
             sender.ReceiveNextPage(this);
         }
@@ -112,6 +107,15 @@ namespace HousingCoo.Presentation.Voting {
             } catch (Exception ex) {
                 logger.Error(ex);
             }
+        }
+
+        public void NavigatorPageChanged() {
+            DispatcherEx.BeginRise(() => {
+                PageNavigator.ToolbarMenu.Add(new ToolbarItem() {
+                    Icon = "baseline_create_white_24dp.png",
+                    Command = Controller.AddNewVoting
+                });
+            });
         }
     }
 }

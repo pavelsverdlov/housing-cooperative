@@ -10,6 +10,7 @@ using Xamarin.Presentation.Framework.VSVVM;
 using Xamarin.Presentation.Infrastructure;
 using Xamarin.Presentation.Navigation;
 using Xamarin.Presentation.Pages;
+using Xamarin.Presentation.Pages.Tab;
 using Xamarin.Presentation.Social.States;
 
 namespace HousingCoo.Presentation.Messaging {
@@ -30,7 +31,7 @@ namespace HousingCoo.Presentation.Messaging {
         }
     }
     public class PrivateMessListPresenter : HousingDefCollectionPresenter<PrivateMessListViewState, PrivateMessListController, PeopleViewState>,
-        IMessagingPeopleListConsumer {
+        IMessagingPeopleListConsumer , ITabPageNavigatorUpdating {
         readonly IMessagingPeopleListProducer producer;
 
         public PeopleModel Account { get; }
@@ -40,6 +41,7 @@ namespace HousingCoo.Presentation.Messaging {
         public PrivateMessListPresenter(IMessagingPeopleListProducer producer) {
             PageNavigator.IconSource = StaticResources.Icons.MessageWhite;
             PageNavigator.Title = "Private messages";
+
             Account = new PeopleModel();
             MessageTo = new PeopleModel();
             this.producer = producer;
@@ -67,6 +69,12 @@ namespace HousingCoo.Presentation.Messaging {
         public void OnReceived(IEnumerable<PeopleModel> mess) {
             mess.ForEach(x => ViewState.ViewCollection.Add(new PeopleViewState {
                 IconSource = "person.png", Name = x.Name, Info = "last message text" }));
+        }
+
+        public void NavigatorPageChanged() {
+            DispatcherEx.BeginRise(() => {
+                PageNavigator.ToolbarMenu.Clear();
+            });
         }
     }
 }

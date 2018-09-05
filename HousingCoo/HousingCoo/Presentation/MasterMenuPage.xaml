@@ -4,15 +4,16 @@
              x:Class="HousingCoo.Presentation.MasterMenuPage"
              xmlns:pages="clr-namespace:Xamarin.Presentation.Pages;assembly=Xamarin.Presentation"
              xmlns:tab="clr-namespace:Xamarin.Presentation.Pages.Tab;assembly=Xamarin.Presentation"
+             xmlns:conv="clr-namespace:Xamarin.Presentation.Converters;assembly=Xamarin.Presentation"
              xmlns:voting="clr-namespace:HousingCoo.Presentation.Voting"
              xmlns:people="clr-namespace:HousingCoo.Presentation.People"
              xmlns:mess="clr-namespace:HousingCoo.Presentation.Messaging"
              xmlns:not="clr-namespace:HousingCoo.Presentation.Notification"
-             xmlns:presen="clr-namespace:HousingCoo.Presentation" Title="MasterDetailPage"
-            x:Name="page">
+             xmlns:presen="clr-namespace:HousingCoo.Presentation" 
+            x:Name="page" Title="MasterDetailPage">
     <MasterDetailPage.Resources>
         <ControlTemplate x:Key="ct0">
-            <voting:VoitingListView />
+            <voting:VoitingListView x:Name="votingview" />
         </ControlTemplate>
         <ControlTemplate x:Key="ct1">
             <people:PeopleListView x:Name="peopleview"/>
@@ -28,12 +29,16 @@
             Template1="{StaticResource ct1}"
             Template2="{StaticResource ct2}"
             Template3="{StaticResource ct3}"/>
-        
+
+        <conv:NullVisibilityConverter x:Key="NullToVisible"/>
+
     </MasterDetailPage.Resources>
     <!--Use MasterDetailPage > NavigationPage OR TabbedPage > NavigationPage BUT NOT MasterDetailPage > TabbedPage.-->
     <MasterDetailPage.BindingContext>
         <presen:MasterDetailPresenter />
     </MasterDetailPage.BindingContext>
+
+   
 
     <MasterDetailPage.Master>
         <presen:MasterMenuPageMaster Title="Need to set :(" BindingContext="{Binding}" />
@@ -42,13 +47,22 @@
     <MasterDetailPage.Detail>
         <NavigationPage Title="NavigationPage">
             <x:Arguments>
-                <tab:TabPage TabControlSelector="{StaticResource selector}" BindingContext="{Binding TabPages}"/>
+                <tab:TabPage TabControlSelector="{StaticResource selector}" BindingContext="{Binding TabPages}" />
             </x:Arguments>
         </NavigationPage>
     </MasterDetailPage.Detail>
-
+    
+    <!--<MasterDetailPage.ToolbarItems>
+        <pages:XamToolbarItem Icon="baseline_create_white_24dp.png" x:Name="item1"
+                              IsVisible="False"
+                              Command="{Binding Source={x:Reference Name=page}, Path=BindingContext.TabPages.Content.Presenter.Controller.AddNewVoting}"/>
+        <pages:XamToolbarItem Icon="ic_message_white_24dp.png"  x:Name="item2"
+                              Command="{Binding Source={x:Reference Name=page}, Path=BindingContext.TabPages.Content.Presenter.Controller.SendMessage}"  
+                              IsVisible="{Binding Source={x:Reference Name=item2}, Path=Command, Converter={StaticResource NullToVisible}}"/>
+    </MasterDetailPage.ToolbarItems>-->
+    
     <!--<MasterDetailPage.Detail>
-
+IsVisible="{Binding  Source={x:Reference Name=item1}, Path=Command, Converter={StaticResource NullToVisible}}"
         <NavigationPage>
             <x:Arguments>
                 --><!--<tab:TabPage TabControlSelector="{StaticResource selector}" BindingContext="{Binding TabPages}"/>--><!--

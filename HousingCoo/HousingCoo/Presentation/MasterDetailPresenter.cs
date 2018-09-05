@@ -32,8 +32,9 @@ namespace HousingCoo.Presentation {
     }
 
     public class TabPageSwither : Xamarin.Presentation.Framework.BaseNotify, ITabPresenter, ITabController {
-        class TabPage : TabPageItem {
+        class TabPage<TPres> : TabPageItem<TPres> {
             public TabPage(IPageNavigator pageNavigator) : base(pageNavigator) {
+
             }
         }
 
@@ -66,22 +67,22 @@ namespace HousingCoo.Presentation {
 
         internal void OpenVotingPage() {
             PageNavigator.Title = "Voting";
-            Content = new TabPage(PageNavigator) { Index = 0 };
+            Content = new TabPage<Voting.VotingListPresenter>(PageNavigator) { Index = 0 };
             SetPropertyChanged(nameof(Content));
         }
         internal void OpenPeoplePage() {
             PageNavigator.Title = "People";
-            Content = new TabPage(PageNavigator) { Index = 1 };
+            Content = new TabPage<People.PeopleListPagePresenter>(PageNavigator) { Index = 1 };
             SetPropertyChanged(nameof(Content));
         }
         internal void OpenPrivateMessagesPage() {
             PageNavigator.Title = "Private messages";
-            Content = new TabPage(PageNavigator) { Index = 2 };
+            Content = new TabPage<Messaging.PrivateMessListPresenter>(PageNavigator) { Index = 2 };
             SetPropertyChanged(nameof(Content));
         }
         internal void OpenNotificationPage() {
             PageNavigator.Title = "Notification";
-            Content = new TabPage(PageNavigator) { Index = 3 };
+            Content = new TabPage<Notification.NotificationListPresenter>(PageNavigator) { Index = 3 };
             SetPropertyChanged(nameof(Content));
         }
     }
@@ -108,18 +109,18 @@ namespace HousingCoo.Presentation {
         protected override void Init(MasterDetailViewState vs, MasterDetailController con) {
             base.Init(vs, con);
             var i = 0;
-            //var items = new List<NavPageMenuItem>(new[] {
-            //        new NavPageMenuItem { Id = i,   Title = "People" ,TargetType = typeof(People.PeopleListPage),
-            //            Image = "ic_people_black_18dp.png" },
-            //        new NavPageMenuItem { Id = ++i, Title = "Messages" ,TargetType = typeof(Messaging.PrivateMessageListPage),
-            //            Image = StaticResources.Icons.MessageBlack},
-            //        new NavPageMenuItem { Id = ++i, Title = "Notifications" ,TargetType = typeof(Notification.NotificationListPage),
-            //            Image ="baseline_notifications_black_24dp.png"},
-            //        //new NavPageMenuItem { Id = ++i, Title = "Cashbox" ,TargetType = typeof(Profile.EditProfilePage) },
-            //        //new NavPageMenuItem { Id = 0, Title = "Personal Information", TargetType = typeof(Profile.EditProfilePage) }
-            //    });
+            var items = new List<NavPageMenuItem>(new[] {
+                    //new NavPageMenuItem { Id = i,   Title = "People" ,TargetType = typeof(People.PeopleListPage),
+                    //    Image = "ic_people_black_18dp.png" },
+                    //new NavPageMenuItem { Id = ++i, Title = "Messages" ,TargetType = typeof(Messaging.PrivateMessageListPage),
+                    //    Image = StaticResources.Icons.MessageBlack},
+                    //new NavPageMenuItem { Id = ++i, Title = "Notifications" ,TargetType = typeof(Notification.NotificationListPage),
+                    //    Image ="baseline_notifications_black_24dp.png"},
+                    new NavPageMenuItem { Id = ++i, Title = "Cashbox" ,TargetType = typeof(Profile.EditProfilePage) },
+                    new NavPageMenuItem { Id = 0, Title = "Personal Information", TargetType = typeof(Profile.EditProfilePage) }
+                });
 
-           // items.ForEach(x=> ViewState.MenuItems.Add(x));
+            items.ForEach(x => ViewState.MenuItems.Add(x));
             con.Presenter = this;
         }
 
